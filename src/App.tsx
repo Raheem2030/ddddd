@@ -1,5 +1,5 @@
 import React from 'react';
-import { HashRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Layout } from './components/layout/Layout';
 import { WelcomePage } from './pages/WelcomePage';
 import { SelectionPage } from './pages/SelectionPage';
@@ -9,7 +9,7 @@ import { ChapterPage } from './pages/ChapterPage';
 
 export default function App() {
   return (
-    <HashRouter>
+    <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<WelcomePage />} />
@@ -19,6 +19,6 @@ export default function App() {
           <Route path="subject/:id/chapter/:chapterId" element={<ChapterPage />} />
         </Route>
       </Routes>
-    </HashRouter>
+    </BrowserRouter>
   );
 }

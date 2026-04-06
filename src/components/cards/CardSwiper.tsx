@@ -20,18 +20,50 @@ export function CardSwiper({ cards, onComplete }: CardSwiperProps) {
         className="w-full h-full flex overflow-x-auto snap-x snap-mandatory hide-scrollbar"
         style={{ scrollBehavior: 'smooth' }}
       >
-        {cards.map((card, index) => (
-          <div 
-            key={card.id} 
-            className="w-full h-full shrink-0 snap-center flex items-center justify-center p-4 sm:p-6"
-          >
-            <div className="w-full max-w-sm h-[80vh] relative">
-              {card.type === 'text' && <TextCard data={card} />}
-              {card.type === 'media' && <MediaCard data={card} />}
-              {card.type === 'interactive' && <InteractiveCard data={card} />}
+        {cards.map((card, index) => {
+          const progress = (index + 1) / cards.length;
+          const circumference = 2 * Math.PI * 16; // r=16
+          const strokeDashoffset = circumference - progress * circumference;
+
+          return (
+            <div 
+              key={card.id} 
+              className="w-full h-full shrink-0 snap-center flex items-center justify-center p-4 sm:p-6"
+            >
+              <div className="w-full max-w-sm h-[80vh] relative">
+                {card.type === 'text' && <TextCard data={card} />}
+                {card.type === 'media' && <MediaCard data={card} />}
+                {card.type === 'interactive' && <InteractiveCard data={card} />}
+                
+                {/* Progress Indicator */}
+                <div className="absolute top-6 left-6 z-50 flex items-center justify-center w-10 h-10 bg-[#0a0f1a]/80 rounded-full backdrop-blur-md border border-white/10 shadow-[0_0_15px_rgba(0,240,255,0.2)]">
+                  <svg className="absolute inset-0 w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+                    <circle
+                      cx="18" cy="18" r="16"
+                      fill="none"
+                      className="stroke-white/10"
+                      strokeWidth="2"
+                    />
+                    <circle
+                      cx="18" cy="18" r="16"
+                      fill="none"
+                      className="stroke-[#00F0FF] transition-all duration-300 ease-in-out"
+                      strokeWidth="2"
+                      strokeDasharray={circumference}
+                      strokeDashoffset={strokeDashoffset}
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                  <div className="relative z-10 text-[11px] font-bold flex items-center justify-center" dir="ltr">
+                    <span className="text-[#00F0FF]">{index + 1}</span>
+                    <span className="mx-[2px] text-white/40 text-[9px]">/</span>
+                    <span className="text-white/70">{cards.length}</span>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
 
         {/* Final Completion Slide */}
         <div className="w-full h-full shrink-0 snap-center flex items-center justify-center p-4 sm:p-6">

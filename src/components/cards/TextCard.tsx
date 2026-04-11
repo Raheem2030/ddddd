@@ -28,7 +28,7 @@ export function TextCard({ data }: TextCardProps) {
       {/* Inner glow for the main card */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-4 bg-[#00F0FF]/20 blur-2xl"></div>
 
-      <h2 className="text-2xl font-bold mb-6 text-[#00F0FF] drop-shadow-[0_0_8px_rgba(0,240,255,0.6)] border-b border-[#00F0FF]/20 pb-4 text-center">
+      <h2 className="text-2xl font-bold mb-6 text-[#00F0FF] drop-shadow-[0_0_8px_rgba(0,240,255,0.6)] border-b border-[#00F0FF]/20 pb-4 text-center px-12">
         {data.title}
       </h2>
       

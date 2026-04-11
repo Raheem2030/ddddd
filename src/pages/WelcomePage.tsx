@@ -39,7 +39,7 @@ export function WelcomePage() {
         className="relative z-10 space-y-4"
       >
         <h1 className="text-5xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-pharma-primary)] to-[var(--color-pharma-accent)]">
-          PharmaDeck
+          Pharma-Study
         </h1>
         <p className="text-lg text-gray-300 max-w-[280px] mx-auto leading-relaxed">
           منصتك الذكية لتعلم الصيدلة بأسلوب الكبسولات المعرفية.

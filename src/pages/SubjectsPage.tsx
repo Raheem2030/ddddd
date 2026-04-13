@@ -14,6 +14,7 @@ export function SubjectsPage() {
   const type = searchParams.get('type') as SubjectTypeFilter || 'نظري';
 
   const filteredSubjects = useMemo(() => {
+    if (!subjects || !Array.isArray(subjects)) return [];
     return subjects.filter(s => s.year === year && s.semester === semester && s.type.includes(type));
   }, [year, semester, type]);
 

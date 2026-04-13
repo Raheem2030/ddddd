@@ -9,7 +9,7 @@ import { ChapterPage } from './pages/ChapterPage';
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<WelcomePage />} />
@@ -19,6 +19,6 @@ export default function App() {
           <Route path="subject/:id/chapter/:chapterId" element={<ChapterPage />} />
         </Route>
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   );
 }

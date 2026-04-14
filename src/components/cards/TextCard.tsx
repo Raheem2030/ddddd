@@ -36,8 +36,26 @@ export function TextCard({ data }: TextCardProps) {
       </h2>
       
       <div className="flex-1 overflow-y-auto overscroll-y-contain hide-scrollbar pr-2">
-        {data.subPanels ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pb-4">
+        {data.content && (
+          <div className="space-y-4 text-gray-200 text-lg leading-relaxed mb-6">
+            {data.content.map((paragraph, index) => (
+              <div key={index} className="flex items-start gap-3">
+                <FlaskConical className="w-5 h-5 mt-1 text-[#00F0FF] shrink-0" />
+                <div className="flex-1 markdown-body" dir="rtl">
+                  <ReactMarkdown remarkPlugins={[remarkMath]} rehypePlugins={[rehypeKatex]}>
+                    {paragraph}
+                  </ReactMarkdown>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {data.subPanels && (
+          <div className={cn(
+            "grid gap-4 pb-4",
+            data.subPanels.length === 1 ? "grid-cols-1" : "grid-cols-1 sm:grid-cols-2"
+          )}>
             {data.subPanels.map((panel, index) => {
               const isBlue = panel.color === 'blue';
               const borderColor = isBlue ? 'border-[#00F0FF]/40' : 'border-[#BC13FE]/40';
@@ -57,16 +75,16 @@ export function TextCard({ data }: TextCardProps) {
                   )}></div>
 
                   <div className="flex items-center gap-3 z-10">
-                    <div className={cn("p-2 rounded-xl bg-black/30 border", borderColor)}>
+                    <div className={cn("p-2 rounded-xl bg-black/30 border shrink-0", borderColor)}>
                       {getIcon(panel.icon, textColor)}
                     </div>
-                    <div className={cn("font-bold text-lg", textColor, glowText)}>
+                    <div className={cn("font-bold text-lg flex-1 min-w-0 break-words", textColor, glowText)}>
                       <ReactMarkdown remarkPlugins={[remarkMath]} rehypePlugins={[rehypeKatex]} components={{ p: React.Fragment }}>
                         {panel.title}
                       </ReactMarkdown>
                     </div>
                   </div>
-                  <div className="text-white/90 text-sm leading-relaxed z-10 mt-1 markdown-body" dir="rtl">
+                  <div className="text-white/90 text-sm leading-relaxed z-10 mt-1 markdown-body break-words" dir="rtl">
                     <ReactMarkdown remarkPlugins={[remarkMath]} rehypePlugins={[rehypeKatex]}>
                       {panel.content}
                     </ReactMarkdown>
@@ -74,19 +92,6 @@ export function TextCard({ data }: TextCardProps) {
                 </div>
               );
             })}
-          </div>
-        ) : (
-          <div className="space-y-4 text-gray-200 text-lg leading-relaxed">
-            {data.content?.map((paragraph, index) => (
-              <div key={index} className="flex items-start gap-3">
-                <FlaskConical className="w-5 h-5 mt-1 text-[var(--color-pharma-accent)] shrink-0" />
-                <div className="flex-1 markdown-body" dir="rtl">
-                  <ReactMarkdown remarkPlugins={[remarkMath]} rehypePlugins={[rehypeKatex]}>
-                    {paragraph}
-                  </ReactMarkdown>
-                </div>
-              </div>
-            ))}
           </div>
         )}
       </div>

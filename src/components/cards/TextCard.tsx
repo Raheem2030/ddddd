@@ -2,6 +2,9 @@ import React from 'react';
 import { TextCardData } from '../../types';
 import { cn } from '../../lib/utils';
 import { FlaskConical, Atom, Pill, List, Flame, Hourglass, Image as ImageIcon, CheckCircle } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
 
 interface TextCardProps {
   data: TextCardData;
@@ -57,13 +60,17 @@ export function TextCard({ data }: TextCardProps) {
                     <div className={cn("p-2 rounded-xl bg-black/30 border", borderColor)}>
                       {getIcon(panel.icon, textColor)}
                     </div>
-                    <h3 className={cn("font-bold text-lg", textColor, glowText)}>
-                      {panel.title}
-                    </h3>
+                    <div className={cn("font-bold text-lg", textColor, glowText)}>
+                      <ReactMarkdown remarkPlugins={[remarkMath]} rehypePlugins={[rehypeKatex]} components={{ p: React.Fragment }}>
+                        {panel.title}
+                      </ReactMarkdown>
+                    </div>
                   </div>
-                  <p className="text-white/90 text-sm leading-relaxed z-10 mt-1">
-                    {panel.content}
-                  </p>
+                  <div className="text-white/90 text-sm leading-relaxed z-10 mt-1 markdown-body" dir="rtl">
+                    <ReactMarkdown remarkPlugins={[remarkMath]} rehypePlugins={[rehypeKatex]}>
+                      {panel.content}
+                    </ReactMarkdown>
+                  </div>
                 </div>
               );
             })}
@@ -73,7 +80,11 @@ export function TextCard({ data }: TextCardProps) {
             {data.content?.map((paragraph, index) => (
               <div key={index} className="flex items-start gap-3">
                 <FlaskConical className="w-5 h-5 mt-1 text-[var(--color-pharma-accent)] shrink-0" />
-                <p>{paragraph}</p>
+                <div className="flex-1 markdown-body" dir="rtl">
+                  <ReactMarkdown remarkPlugins={[remarkMath]} rehypePlugins={[rehypeKatex]}>
+                    {paragraph}
+                  </ReactMarkdown>
+                </div>
               </div>
             ))}
           </div>

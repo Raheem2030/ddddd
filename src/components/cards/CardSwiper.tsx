@@ -3,6 +3,7 @@ import { ContentCard } from '../../types';
 import { TextCard } from './TextCard';
 import { MediaCard } from './MediaCard';
 import { InteractiveCard } from './InteractiveCard';
+import { SimulatorCard } from './SimulatorCard';
 import { CheckCircle2 } from 'lucide-react';
 
 interface CardSwiperProps {
@@ -34,6 +35,7 @@ export function CardSwiper({ cards, onComplete }: CardSwiperProps) {
                 {card.type === 'text' && <TextCard data={card} />}
                 {card.type === 'media' && <MediaCard data={card} />}
                 {card.type === 'interactive' && <InteractiveCard data={card} />}
+                {card.type === 'simulator' && <SimulatorCard data={card} />}
                 
                 {/* Progress Indicator */}
                 <div className="absolute top-6 left-6 z-50 flex items-center justify-center w-10 h-10 bg-[#0a0f1a]/80 rounded-full backdrop-blur-md border border-white/10 shadow-[0_0_15px_rgba(0,240,255,0.2)]">

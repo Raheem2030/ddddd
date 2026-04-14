@@ -1000,6 +1000,15 @@ export const subjectContents: Record<string, SubjectContent> = {
           }
         ]
       }
+    ],
+    quizzes: [
+      {
+        id: 'q-sim-1',
+        title: 'المخبر الافتراضي: تفاعلات الكشف',
+        type: 'simulator',
+        path: '/simulator/biochem-tests',
+        status: 'not_started'
+      }
     ]
   }
 };

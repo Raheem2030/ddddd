@@ -6,6 +6,7 @@ import { SelectionPage } from './pages/SelectionPage';
 import { SubjectsPage } from './pages/SubjectsPage';
 import { SubjectDashboard } from './pages/SubjectDashboard';
 import { ChapterPage } from './pages/ChapterPage';
+import { BiochemSimulatorPage } from './pages/BiochemSimulatorPage';
 
 export default function App() {
   return (
@@ -17,6 +18,7 @@ export default function App() {
           <Route path="subjects" element={<SubjectsPage />} />
           <Route path="subject/:id" element={<SubjectDashboard />} />
           <Route path="subject/:id/chapter/:chapterId" element={<ChapterPage />} />
+          <Route path="simulator/biochem-tests" element={<BiochemSimulatorPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
       </Routes>

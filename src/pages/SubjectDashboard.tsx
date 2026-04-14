@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
-import { ArrowRight, BookOpen, Layers, CheckCircle, PlayCircle, FileText, BrainCircuit, BotMessageSquare, ArrowLeft } from 'lucide-react';
+import { ArrowRight, BookOpen, Layers, CheckCircle, PlayCircle, FileText, BrainCircuit, BotMessageSquare, ArrowLeft, FlaskConical } from 'lucide-react';
 import { subjects, subjectContents } from '../data';
 import { AiAssistant } from '../components/AiAssistant';
 
@@ -106,10 +106,10 @@ export function SubjectDashboard() {
               <div className="space-y-4">
                 {content?.chapters.length ? (
                   content.chapters.map((chapter) => (
-                    <div 
+                    <button 
                       key={chapter.id}
                       onClick={() => navigate(`/subject/${subject.id}/chapter/${chapter.id}`)}
-                      className="glass-panel rounded-3xl p-6 border border-[var(--color-pharma-primary)]/30 relative overflow-hidden group cursor-pointer hover:border-[var(--color-pharma-primary)] transition-all duration-300"
+                      className="w-full text-right glass-panel rounded-3xl p-6 border border-[var(--color-pharma-primary)]/30 relative overflow-hidden group cursor-pointer hover:border-[var(--color-pharma-primary)] transition-all duration-300 block"
                     >
                       <div className="absolute -right-10 -top-10 w-32 h-32 bg-[var(--color-pharma-primary)]/10 rounded-full blur-2xl group-hover:bg-[var(--color-pharma-primary)]/30 transition-all duration-500"></div>
                       
@@ -125,7 +125,7 @@ export function SubjectDashboard() {
                         <span>عرض الكبسولات</span>
                         <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
                       </div>
-                    </div>
+                    </button>
                   ))
                 ) : (
                   <div className="text-center text-gray-500 mt-10">
@@ -177,20 +177,32 @@ export function SubjectDashboard() {
             >
               {content?.quizzes && content.quizzes.length > 0 ? (
                 content.quizzes.map((quiz) => (
-                  <div key={quiz.id} className="glass-panel rounded-2xl p-5 border border-white/10 flex items-center justify-between hover:border-[var(--color-pharma-accent)]/50 transition-colors cursor-pointer">
+                  <button 
+                    key={quiz.id} 
+                    onClick={() => {
+                      if (quiz.path) {
+                        navigate(quiz.path);
+                      }
+                    }}
+                    className="w-full text-right glass-panel rounded-2xl p-5 border border-white/10 flex items-center justify-between hover:border-[var(--color-pharma-accent)]/50 transition-colors cursor-pointer block"
+                  >
                     <div className="flex items-center gap-4">
                       <div className="w-12 h-12 rounded-xl bg-[var(--color-pharma-accent)]/20 flex items-center justify-center text-[var(--color-pharma-accent)] shrink-0">
-                        <BrainCircuit className="w-6 h-6" />
+                        {quiz.type === 'simulator' ? <FlaskConical className="w-6 h-6" /> : <BrainCircuit className="w-6 h-6" />}
                       </div>
                       <div>
                         <h4 className="font-bold text-white">{quiz.title}</h4>
-                        <p className="text-xs text-gray-400 mt-1">{quiz.questionCount} سؤال • {quiz.durationMinutes} دقيقة</p>
+                        {quiz.type === 'simulator' ? (
+                          <p className="text-xs text-[var(--color-pharma-accent)] mt-1">مخبر افتراضي تفاعلي</p>
+                        ) : (
+                          <p className="text-xs text-gray-400 mt-1">{quiz.questionCount} سؤال • {quiz.durationMinutes} دقيقة</p>
+                        )}
                       </div>
                     </div>
                     <div className="px-3 py-1 rounded-full bg-white/10 text-xs font-bold text-gray-300 whitespace-nowrap">
                       {quiz.status === 'not_started' ? 'لم يبدأ' : quiz.status === 'in_progress' ? 'قيد الإنجاز' : 'مكتمل'}
                     </div>
-                  </div>
+                  </button>
                 ))
               ) : (
                 <div className="text-center text-gray-500 mt-10">

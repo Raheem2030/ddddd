@@ -18,7 +18,7 @@ export interface Subject {
   type: string; // e.g., 'نظري', 'عملي', 'نظري + عملي'
 }
 
-export type CardType = 'text' | 'media' | 'interactive';
+export type CardType = 'text' | 'media' | 'interactive' | 'simulator';
 
 export interface BaseCard {
   id: string;
@@ -60,7 +60,12 @@ export interface InteractiveCardData extends BaseCard {
   explanation: string;
 }
 
-export type ContentCard = TextCardData | MediaCardData | InteractiveCardData;
+export interface SimulatorCardData extends BaseCard {
+  type: 'simulator';
+  simulatorId: string;
+}
+
+export type ContentCard = TextCardData | MediaCardData | InteractiveCardData | SimulatorCardData;
 
 export interface Capsule {
   id: string;

@@ -93,8 +93,10 @@ export interface Resource {
 export interface Quiz {
   id: string;
   title: string;
-  questionCount: number;
-  durationMinutes: number;
+  type?: 'quiz' | 'simulator';
+  path?: string; // Optional custom route path
+  questionCount?: number;
+  durationMinutes?: number;
   status: 'not_started' | 'in_progress' | 'completed';
 }
 

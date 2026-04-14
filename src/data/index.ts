@@ -56,7 +56,7 @@ export function SubjectDashboard() {
                 ? 'bg-[var(--color-pharma-primary)] text-black shadow-[0_0_15px_rgba(0,240,255,0.4)]' 
                 : 'text-gray-400 hover:text-white'
             }`}
-          >
+          > },
             <BookOpen className="w-4 h-4" />
           </button>
           <button

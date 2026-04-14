@@ -25,7 +25,7 @@ export const subjects: Subject[] = [
   { id: '3-1-4', name: 'عقاقير 2', year: 'السنة الثالثة', semester: 'الفصل الأول', type: 'نظري + عملي' },
   { id: '3-1-5', name: 'تكنولوجيا صيدلانية', year: 'السنة الثالثة', semester: 'الفصل الأول', type: 'نظري + عملي' },
   { id: '3-1-6', name: 'فارماكولوجي 1', year: 'السنة الثالثة', semester: 'الفصل الأول', type: 'نظري + عملي' },
-  { id: '3-1-7', name: 'كيمياء حيوية 2', year: 'السنة الثالثة', semester: 'الفصل الأول', type: 'نظري + عملي' },
+  { id: '3-1-7', name: 'كيمياء حيوية 2', year: 'السنة الثالثة', semester: 'الفصل الأول', type: 'نظري' },
 
   // السنة الثالثة - الفصل الثاني
   { id: '3-2-1', name: 'كيمياء صيدلية 1', year: 'السنة الثالثة', semester: 'الفصل الثاني', type: 'نظري + عملي' },
@@ -694,8 +694,8 @@ export const subjectContents: Record<string, SubjectContent> = {
       }
     ]
   },
-  '3-1-7': {
-    subjectId: '3-1-7',
+  '2-2-5': {
+    subjectId: '2-2-5',
     chapters: [
       {
         id: 'ch-prac-1',

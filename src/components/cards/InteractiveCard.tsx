@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
-import { InteractiveCardData } from '../../types';
+import { ContentCard } from '../../types';
 import { cn } from '../../lib/utils';
 import { CheckCircle2, XCircle, BrainCircuit } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 interface InteractiveCardProps {
-  data: InteractiveCardData;
+  data: ContentCard;
+  hideWrapper?: boolean;
 }
 
-export function InteractiveCard({ data }: InteractiveCardProps) {
+export function InteractiveCard({ data, hideWrapper }: InteractiveCardProps) {
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [showExplanation, setShowExplanation] = useState(false);
 
@@ -28,11 +29,8 @@ export function InteractiveCard({ data }: InteractiveCardProps) {
     }
   };
 
-  return (
-    <div className={cn(
-      "glass-panel rounded-3xl p-6 w-full h-full flex flex-col",
-      "border-t border-l border-opacity-20 border-white overflow-y-auto hide-scrollbar overscroll-y-contain"
-    )}>
+  const Content = (
+      <>
       <div className="flex items-center gap-3 mb-6 border-b border-[var(--color-pharma-glass-border)] pb-4">
         <BrainCircuit className="w-6 h-6 text-[var(--color-pharma-accent)]" />
         <h2 className="text-xl font-bold text-[var(--color-pharma-primary)]">
@@ -46,7 +44,7 @@ export function InteractiveCard({ data }: InteractiveCardProps) {
         </p>
 
         <div className="space-y-3 mb-6">
-          {data.options.map((option, index) => {
+          {data.options?.map((option, index) => {
             const isSelected = selectedOption === index;
             const isCorrect = index === data.correctOptionIndex;
             const showStatus = selectedOption !== null;
@@ -105,6 +103,19 @@ export function InteractiveCard({ data }: InteractiveCardProps) {
           )}
         </AnimatePresence>
       </div>
+      </>
+  );
+
+  if (hideWrapper) {
+    return <div className="w-full h-full flex flex-col p-6 overflow-y-auto hide-scrollbar overscroll-y-contain">{Content}</div>;
+  }
+
+  return (
+    <div className={cn(
+      "glass-panel rounded-3xl p-6 w-full h-full flex flex-col",
+      "border-t border-l border-opacity-20 border-white overflow-y-auto hide-scrollbar overscroll-y-contain"
+    )}>
+      {Content}
     </div>
   );
 }

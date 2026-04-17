@@ -37,14 +37,14 @@ export function AiAssistant({ subjectName, subjectContext = '' }: { subjectName:
 
     try {
       // Use the provided API Key as fallback if environment is missing
-      const apiKey = process.env.GEMINI_API_KEY || 'AIzaSyAYvF0wsnsKZv3A2Hnim2ivhQzhLcKcN7U';
+      const apiKey = (import.meta as any).env.VITE_GEMINI_API_KEY || 'AIzaSyAYvF0wsnsKZv3A2Hnim2ivhQzhLcKcN7U';
       const ai = new GoogleGenAI({ apiKey });
       
       // Formatting context for the prompt
       const contextPrompt = subjectContext ? `\n\n### المحتوى الأكاديمي المتاح للمقرر (يجب أن تبني إجاباتك بناءً عليه حصراً):\n${subjectContext}` : '';
 
       const response = await ai.models.generateContent({
-        model: 'gemini-3.1-pro-preview',
+        model: 'gemini-3-flash-preview',
         contents: [
           ...messages.slice(1).map(m => ({ role: m.role, parts: [{ text: m.content }] })),
           { role: 'user', parts: [{ text: userMessage }] }

@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
-import { MediaCardData, MediaItem } from '../../types';
+import { ContentCard, MediaItem } from '../../types';
 import { cn } from '../../lib/utils';
 import { Image as ImageIcon, PlayCircle, BarChart2, Headphones, ArrowLeft } from 'lucide-react';
 
 interface MediaCardProps {
-  data: MediaCardData;
+  data: ContentCard;
+  hideWrapper?: boolean;
 }
 
-export function MediaCard({ data }: MediaCardProps) {
+export function MediaCard({ data, hideWrapper }: MediaCardProps) {
   const [selectedItem, setSelectedItem] = useState<MediaItem | null>(null);
+
+  const items = data.items || [];
 
   const getIcon = (type: string) => {
     switch (type) {
@@ -20,13 +23,9 @@ export function MediaCard({ data }: MediaCardProps) {
     }
   };
 
-  if (selectedItem) {
-    return (
-      <div className={cn(
-        "glass-panel rounded-3xl p-6 w-full h-full flex flex-col",
-        "border-t border-l border-opacity-20 border-white"
-      )}>
-        <div className="flex items-center justify-between mb-4 border-b border-[var(--color-pharma-glass-border)] pb-4">
+  const Content = selectedItem ? (
+      <div className="w-full h-full flex flex-col">
+        <div className="flex items-center justify-between mb-4 border-b border-[var(--color-pharma-glass-border)] pb-4 z-10 relative">
           <h2 className="text-xl font-bold text-[var(--color-pharma-primary)] flex items-center gap-2">
             {getIcon(selectedItem.type)}
             {selectedItem.title}
@@ -39,7 +38,7 @@ export function MediaCard({ data }: MediaCardProps) {
           </button>
         </div>
         
-        <div className="flex-1 flex flex-col items-center justify-center overflow-hidden rounded-2xl bg-black/40 border border-[var(--color-pharma-glass-border)] relative group">
+        <div className="flex-1 flex flex-col items-center justify-center overflow-hidden rounded-2xl bg-black/40 border border-[var(--color-pharma-glass-border)] relative group z-10">
           {selectedItem.type === 'image' || selectedItem.type === 'diagram' ? (
             <img 
               src={selectedItem.url} 
@@ -68,38 +67,49 @@ export function MediaCard({ data }: MediaCardProps) {
           )}
         </div>
       </div>
-    );
+  ) : (
+      <div className="w-full h-full flex flex-col z-10 relative">
+        <h2 className="text-2xl font-bold mb-6 text-[var(--color-pharma-primary)] border-b border-[var(--color-pharma-glass-border)] pb-4 flex items-center gap-2">
+          <ImageIcon className="w-6 h-6" />
+          {data.title}
+        </h2>
+        
+        <div className="flex-1 overflow-y-auto overscroll-y-contain hide-scrollbar space-y-4">
+          {items.length > 0 ? items.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => setSelectedItem(item)}
+              className="w-full p-4 rounded-2xl border border-[var(--color-pharma-glass-border)] bg-white/5 hover:bg-white/10 transition-all flex items-center gap-4 group"
+            >
+              <div className="p-3 rounded-xl bg-[var(--color-pharma-primary)]/20 text-[var(--color-pharma-primary)] group-hover:scale-110 transition-transform">
+                {getIcon(item.type)}
+              </div>
+              <div className="text-right flex-1">
+                <h3 className="font-bold text-white">{item.title}</h3>
+                <p className="text-sm text-gray-400 mt-1">
+                  {item.type === 'image' ? 'صورة' : item.type === 'video' ? 'فيديو' : item.type === 'audio' ? 'صوت' : 'مخطط'}
+                </p>
+              </div>
+            </button>
+          )) : (
+            <div className="flex-1 flex items-center justify-center relative mt-10">
+              <p className="text-gray-500">لا يوجد وسائط لعرضها</p>
+            </div>
+          )}
+        </div>
+      </div>
+  );
+
+  if (hideWrapper) {
+    return <div className="w-full h-full p-6">{Content}</div>;
   }
 
   return (
     <div className={cn(
-      "glass-panel rounded-3xl p-6 w-full h-full flex flex-col",
+      "glass-panel rounded-3xl p-6 w-full h-full flex flex-col relative",
       "border-t border-l border-opacity-20 border-white"
     )}>
-      <h2 className="text-2xl font-bold mb-6 text-[var(--color-pharma-primary)] border-b border-[var(--color-pharma-glass-border)] pb-4 flex items-center gap-2">
-        <ImageIcon className="w-6 h-6" />
-        {data.title}
-      </h2>
-      
-      <div className="flex-1 overflow-y-auto overscroll-y-contain hide-scrollbar space-y-4">
-        {data.items.map((item) => (
-          <button
-            key={item.id}
-            onClick={() => setSelectedItem(item)}
-            className="w-full p-4 rounded-2xl border border-[var(--color-pharma-glass-border)] bg-white/5 hover:bg-white/10 transition-all flex items-center gap-4 group"
-          >
-            <div className="p-3 rounded-xl bg-[var(--color-pharma-primary)]/20 text-[var(--color-pharma-primary)] group-hover:scale-110 transition-transform">
-              {getIcon(item.type)}
-            </div>
-            <div className="text-right flex-1">
-              <h3 className="font-bold text-white">{item.title}</h3>
-              <p className="text-sm text-gray-400 mt-1">
-                {item.type === 'image' ? 'صورة' : item.type === 'video' ? 'فيديو' : item.type === 'audio' ? 'صوت' : 'مخطط'}
-              </p>
-            </div>
-          </button>
-        ))}
-      </div>
+       {Content}
     </div>
   );
 }

@@ -37,7 +37,12 @@ export function AiAssistant({ subjectName, subjectContext = '' }: { subjectName:
 
     try {
       // Use the provided API Key as fallback if environment is missing
-      const apiKey = (import.meta as any).env.VITE_GEMINI_API_KEY || 'AIzaSyAYvF0wsnsKZv3A2Hnim2ivhQzhLcKcN7U';
+      const apiKey = (import.meta as any).env.VITE_GEMINI_API_KEY || '';
+      
+      if (!apiKey) {
+        throw new Error('لم يتم العثور على مفتاح API. أضفه في إعدادات التطبيق أو ملف .env باسم VITE_GEMINI_API_KEY');
+      }
+
       const ai = new GoogleGenAI({ apiKey });
       
       // Formatting context for the prompt
@@ -63,9 +68,9 @@ export function AiAssistant({ subjectName, subjectContext = '' }: { subjectName:
       if (response.text) {
         setMessages(prev => [...prev, { role: 'model', content: response.text || '' }]);
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error generating content:', error);
-      setMessages(prev => [...prev, { role: 'model', content: 'عذراً، حدث خطأ أثناء الاتصال بالنماذج الذكية. يرجى التأكد من صلاحية المفتاح والمحاولة مرة أخرى.' }]);
+      setMessages(prev => [...prev, { role: 'model', content: `حدث خطأ: ${error?.message || JSON.stringify(error)}` }]);
     } finally {
       setIsLoading(false);
     }

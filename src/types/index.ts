@@ -20,23 +20,11 @@ export interface Subject {
 
 export type CardType = 'text' | 'media' | 'interactive' | 'simulator';
 
-export interface BaseCard {
-  id: string;
-  type: CardType;
-  title: string;
-}
-
 export interface TextSubPanel {
   title: string;
   content: string;
   icon: 'atom' | 'capsule' | 'list' | 'flame' | 'hourglass' | 'flask' | 'book';
   color: 'blue' | 'purple';
-}
-
-export interface TextCardData extends BaseCard {
-  type: 'text';
-  content?: string[]; // Paragraphs or bullet points
-  subPanels?: TextSubPanel[];
 }
 
 export interface MediaItem {
@@ -47,25 +35,27 @@ export interface MediaItem {
   caption?: string;
 }
 
-export interface MediaCardData extends BaseCard {
-  type: 'media';
-  items: MediaItem[];
-}
+export interface ContentCard {
+  id: string;
+  title: string;
+  type?: 'text' | 'media' | 'interactive' | 'simulator'; // kept for backwards compatibility parsing
+  
+  // Text content
+  content?: string[];
+  subPanels?: TextSubPanel[];
+  
+  // Media content
+  items?: MediaItem[];
+  
+  // Interactive content
+  question?: string;
+  options?: string[];
+  correctOptionIndex?: number;
+  explanation?: string;
 
-export interface InteractiveCardData extends BaseCard {
-  type: 'interactive';
-  question: string;
-  options: string[];
-  correctOptionIndex: number;
-  explanation: string;
+  // Simulator content
+  simulatorId?: string;
 }
-
-export interface SimulatorCardData extends BaseCard {
-  type: 'simulator';
-  simulatorId: string;
-}
-
-export type ContentCard = TextCardData | MediaCardData | InteractiveCardData | SimulatorCardData;
 
 export interface Capsule {
   id: string;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextCardData } from '../../types';
+import { ContentCard } from '../../types';
 import { cn } from '../../lib/utils';
 import { FlaskConical, Atom, Pill, List, Flame, Hourglass, Image as ImageIcon, CheckCircle } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
@@ -7,10 +7,11 @@ import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 
 interface TextCardProps {
-  data: TextCardData;
+  data: ContentCard;
+  hideWrapper?: boolean;
 }
 
-export function TextCard({ data }: TextCardProps) {
+export function TextCard({ data, hideWrapper }: TextCardProps) {
   const getIcon = (iconName: string, colorClass: string) => {
     const props = { className: cn("w-6 h-6", colorClass) };
     switch (iconName) {
@@ -23,19 +24,13 @@ export function TextCard({ data }: TextCardProps) {
     }
   };
 
-  return (
-    <div className={cn(
-      "glass-panel rounded-3xl p-6 w-full h-full flex flex-col relative overflow-hidden",
-      "border border-[#00F0FF]/30 shadow-[0_0_30px_rgba(0,240,255,0.1)] bg-[#0a0f1a]/60 backdrop-blur-2xl"
-    )}>
-      {/* Inner glow for the main card */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-4 bg-[#00F0FF]/20 blur-2xl"></div>
-
-      <h2 className="text-2xl font-bold mb-6 text-[#00F0FF] drop-shadow-[0_0_8px_rgba(0,240,255,0.6)] border-b border-[#00F0FF]/20 pb-4 text-center px-12">
+  const Content = (
+    <>
+      <h2 className="text-2xl font-bold mb-6 text-[#00F0FF] drop-shadow-[0_0_8px_rgba(0,240,255,0.6)] border-b border-[#00F0FF]/20 pb-4 text-center px-12 z-10 relative">
         {data.title}
       </h2>
       
-      <div className="flex-1 overflow-y-auto overscroll-y-contain hide-scrollbar pr-2">
+      <div className="flex-1 overflow-y-auto overscroll-y-contain hide-scrollbar pr-2 z-10 relative">
         {data.content && (
           <div className="space-y-4 text-gray-200 text-lg leading-relaxed mb-6">
             {data.content.map((paragraph, index) => (
@@ -95,15 +90,22 @@ export function TextCard({ data }: TextCardProps) {
           </div>
         )}
       </div>
+    </>
+  );
 
-      {/* Bottom Nav Bar inside TextCard */}
-      <div className="mt-4 pt-4 border-t border-white/10 flex items-center justify-between px-4">
-        <div className="flex items-center gap-4">
-          <Pill className="w-5 h-5 text-[#00F0FF] drop-shadow-[0_0_5px_rgba(0,240,255,0.8)]" />
-          <ImageIcon className="w-5 h-5 text-white/30" />
-        </div>
-        <span className="text-xs text-[#00F0FF]/70 font-medium tracking-wider">قسم الكبسولات</span>
-      </div>
+  if (hideWrapper) {
+    return <div className="w-full h-full flex flex-col p-6">{Content}</div>;
+  }
+
+  return (
+    <div className={cn(
+      "glass-panel rounded-3xl p-6 w-full h-full flex flex-col relative overflow-hidden",
+      "border border-[#00F0FF]/30 shadow-[0_0_30px_rgba(0,240,255,0.1)] bg-[#0a0f1a]/60 backdrop-blur-2xl"
+    )}>
+      {/* Inner glow for the main card */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-4 bg-[#00F0FF]/20 blur-2xl"></div>
+
+      {Content}
     </div>
   );
 }

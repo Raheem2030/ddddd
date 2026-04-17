@@ -81,14 +81,13 @@ export function SubjectDashboard() {
           </button>
           <button
             onClick={() => setActiveTab('ai')}
-            className={`flex-1 py-3 text-sm font-bold rounded-xl transition-all duration-300 flex flex-col items-center justify-center gap-1 ${
+            className={`flex-1 py-3 text-sm font-bold rounded-xl transition-all duration-300 flex items-center justify-center gap-2 ${
               activeTab === 'ai' 
                 ? 'bg-white text-black shadow-[0_0_15px_rgba(255,255,255,0.4)]' 
                 : 'text-gray-400 hover:text-white'
             }`}
           >
             <BotMessageSquare className="w-4 h-4" />
-            <span className="text-[9px] opacity-80 leading-none">(قريباً...)</span>
           </button>
         </div>
       </div>
@@ -218,15 +217,17 @@ export function SubjectDashboard() {
               initial={{ x: -20, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: 20, opacity: 0 }}
-              className="h-full flex flex-col items-center justify-center text-center p-6 mt-10"
+              className="h-full flex flex-col pt-2"
             >
-              <div className="w-24 h-24 rounded-full bg-white/5 flex items-center justify-center mb-6 border border-white/10">
-                <BotMessageSquare className="w-12 h-12 text-white/50" />
-              </div>
-              <h3 className="text-2xl font-bold text-white mb-3">المساعد الذكي قريباً</h3>
-              <p className="text-gray-400 text-sm leading-relaxed max-w-xs mx-auto">
-                نعمل على تطوير مساعد ذكي مخصص لمادة {subject.name} للإجابة على جميع استفساراتك وشرح المفاهيم المعقدة.
-              </p>
+              <AiAssistant 
+                subjectName={subject.name} 
+                subjectContext={content?.chapters.map(ch => 
+                  `-- فصل: ${ch.title} --\n` + 
+                  ch.cards?.map(c => 
+                    `[${c.title}]:\n${c.content?.join('\n') || ''}`
+                  ).join('\n\n')
+                ).join('\n\n\n')}
+              />
             </motion.div>
           )}
         </AnimatePresence>

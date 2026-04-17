@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Activity, Droplet } from 'lucide-react';
-import { SimulatorCardData } from '../../types';
+import { ContentCard } from '../../types';
 import { cn } from '../../lib/utils';
 
 // ثوابت المواد بناءً على المحاضرة
@@ -14,10 +14,11 @@ const DRUGS_DATA: Record<string, { id: string, name: string, maxConc: number, sl
 const NACL_SLOPE = 9 / 0.52; // ~17.307
 
 interface SimulatorCardProps {
-  data: SimulatorCardData;
+  data: ContentCard;
+  hideWrapper?: boolean;
 }
 
-export function SimulatorCard({ data }: SimulatorCardProps) {
+export function SimulatorCard({ data, hideWrapper }: SimulatorCardProps) {
   const [selectedDrugId, setSelectedDrugId] = useState('resorcinol');
   const [conc, setConc] = useState(25);
 
@@ -58,22 +59,17 @@ export function SimulatorCard({ data }: SimulatorCardProps) {
   let endY = Math.min(30, 0.6 * selectedDrug.slope);
   let endX = endY / selectedDrug.slope;
 
-  return (
-    <div className={cn(
-      "glass-panel rounded-3xl w-full h-full flex flex-col relative overflow-hidden",
-      "border border-[#00F0FF]/30 shadow-[0_0_30px_rgba(0,240,255,0.1)] bg-[#0a0f1a]/60 backdrop-blur-2xl"
-    )}>
-      {/* Inner glow for the main card */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-4 bg-[#00F0FF]/20 blur-2xl"></div>
-
+  const Content = (
+      <>
       {/* رأس التطبيق */}
-      <div className="bg-gradient-to-b from-[#00F0FF]/20 to-transparent text-white p-5 text-center shadow-md border-b border-[#00F0FF]/20">
+      <div className="bg-gradient-to-b from-[#00F0FF]/20 to-transparent text-white p-5 text-center shadow-md border-b border-[#00F0FF]/20 z-10 relative">
         <Activity className="w-8 h-8 mx-auto mb-2 text-[#00F0FF]" />
         <h1 className="text-xl font-bold text-[#00F0FF] drop-shadow-[0_0_8px_rgba(0,240,255,0.6)]">{data.title}</h1>
         <p className="text-xs text-white/70 mt-1">الطريقة البيانية - صيدلانيات</p>
       </div>
 
-      <div className="flex-1 overflow-y-auto overscroll-y-contain hide-scrollbar p-5 space-y-5">
+      <div className="flex-1 overflow-y-auto overscroll-y-contain hide-scrollbar p-5 space-y-5 z-10 relative">
+
         
         {/* أدوات التحكم */}
         <div className="bg-white/5 p-4 rounded-2xl border border-white/10 shadow-sm space-y-4">
@@ -198,6 +194,22 @@ export function SimulatorCard({ data }: SimulatorCardProps) {
         </div>
 
       </div>
+      </>
+  );
+
+  if (hideWrapper) {
+    return <div className="w-full h-full flex flex-col p-6 overflow-hidden">{Content}</div>;
+  }
+
+  return (
+    <div className={cn(
+      "glass-panel rounded-3xl w-full h-full flex flex-col relative overflow-hidden",
+      "border border-[#00F0FF]/30 shadow-[0_0_30px_rgba(0,240,255,0.1)] bg-[#0a0f1a]/60 backdrop-blur-2xl"
+    )}>
+      {/* Inner glow for the main card */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-4 bg-[#00F0FF]/20 blur-2xl"></div>
+
+      {Content}
     </div>
   );
 }

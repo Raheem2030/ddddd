@@ -38,7 +38,7 @@ export function AiAssistant({ subjectName, subjectContext = '' }: { subjectName:
     try {
       // Use the provided API Key as fallback if environment is missing
       // @ts-ignore
-      const apiKey = import.meta.env.VITE_GEMINI_API_KEY || '';
+      const apiKey = import.meta.env.VITE_GEMINI_API_KEY || import.meta.env.GEMINI_API_KEY || (typeof process !== 'undefined' ? process.env.GEMINI_API_KEY : '') || (typeof process !== 'undefined' ? process.env.VITE_GEMINI_API_KEY : '') || '';
       
       if (!apiKey) {
         throw new Error('لم يتم العثور على مفتاح API. أضفه في إعدادات التطبيق أو ملف .env باسم VITE_GEMINI_API_KEY');

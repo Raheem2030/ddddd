@@ -50,7 +50,7 @@ export function UnifiedCard({ data }: UnifiedCardProps) {
 
   // Set initial tab based on the original designated type (or first available)
   let initialTab = availableTabs.find(t => t.type === data.type)?.type || availableTabs[0]?.type || 'text';
-  if (data.type === 'media' && !availableTabs.find(t => t.type === 'media')) {
+  if ((data.type as string) === 'media' && !availableTabs.find(t => t.type === 'media' as any)) {
       initialTab = availableTabs.find(t => ['image', 'video', 'audio'].includes(t.type))?.type || 'image';
   }
 

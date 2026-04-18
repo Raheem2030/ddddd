@@ -221,10 +221,12 @@ export function SubjectDashboard() {
             >
               <AiAssistant 
                 subjectName={subject.name} 
-                subjectContext={content?.chapters.map(ch => 
+                subjectContext={content?.chapters?.map(ch => 
                   `-- فصل: ${ch.title} --\n` + 
-                  ch.cards?.map(c => 
-                    `[${c.title}]:\n${c.content?.join('\n') || ''}`
+                  ch.capsules?.map(cap => 
+                    cap.cards?.map(c => 
+                      `[${c.title || 'بطاقة'}]:\n${c.content?.join('\n') || ''}`
+                    ).join('\n\n')
                   ).join('\n\n')
                 ).join('\n\n\n')}
               />

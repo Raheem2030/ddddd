@@ -694,7 +694,7 @@ export const subjectContents: Record<string, SubjectContent> = {
       },
       {
         id: 'ch2',
-        title: 'الجلسة العملية الثامنة: الشرابات (Syrups)',
+        title: 'الجلسة العملية الثانية: الشرابات (Syrups)',
         description: 'دراسة مفاهيم وأنواع وطرق تحضير وحفظ الشرابات الدوائية.',
         capsules: [
           {
@@ -902,6 +902,76 @@ export const subjectContents: Record<string, SubjectContent> = {
             ]
           }
         ]
+      },
+      {
+        id: 'ch3',
+        title: 'الجلسة العملية الثالثة: الأكاسير (Elixirs)',
+        description: 'دراسة مفاهيم وأنواع وطرق تحضير الأكاسير المختلفة.',
+        capsules: [
+          {
+            id: 'cap1',
+            title: 'التعريف والخصائص العامة',
+            description: 'مفاهيم وملاحظات هامة حول الأكاسير ومكوناتها.',
+            cards: [
+              {
+                id: 'c1-1', type: 'text', title: 'ما هي الأكاسير؟',
+                content: [
+                  'هي أشكال صيدلانية سائلة (Liquid Dosage Forms) معدة للاستخدام الفموي.',
+                  'تتميز بأنها تحتوي على نسبة عالية من الكحول (Alcohol) تصل لحوالي 10 - 20%.',
+                  '💡 ملاحظة هامة: لا تحتاج الأكاسير الحاوية على نسبة كحول 10 - 20% إلى مواد حافظة (Preservatives)، ونستعمل محلي اصطناعي بسبب قلة ذوبان السكروز (Sucrose) بالكحول.'
+                ]
+              }
+            ]
+          },
+          {
+            id: 'cap2',
+            title: 'إكسير الفينوباربيتال (Phenobarbital Elixir)',
+            description: 'مكونات الوصفة وطريقة التحضير والاستخدام.',
+            cards: [
+              {
+                id: 'c2-1', type: 'text', title: 'مكونات الوصفة ودور كل مادة',
+                subPanels: [
+                  { title: 'فينوباربيتال (0.48 غ)', content: 'مادة فعالة مهدئة.', icon: 'atom', color: 'purple' },
+                  { title: 'إيتانول (15 مل)', content: 'محل للفينوباربيتال غير المنحل بالماء.', icon: 'flask', color: 'blue' },
+                  { title: 'غليسرين (45 مل)', content: 'محلي + رافع لزوجة + للتخفيف من الطعم اللاذع للكحول.', icon: 'flame', color: 'purple' },
+                  { title: 'شراب بسيط (15 مل)', content: 'محلي + رافع لزوجة.', icon: 'capsule', color: 'blue' }
+                ]
+              },
+              {
+                id: 'c2-2', type: 'text', title: 'الاستخدام وطريقة التحضير',
+                content: [
+                  '**استخدام الوصفة:** مهدئة، مضادة لنوبات الصرع.',
+                  '**طريقة التحضير:**',
+                  '1. يحل الفينوباربيتال في الإيتانول.',
+                  '2. نضيف باقي المواد مع المزج الجيد.',
+                  '3. نكمل بالماء المقطر حتى الحجم المطلوب.'
+                ]
+              }
+            ]
+          },
+          {
+            id: 'cap3',
+            title: 'إكسير التيوفيللين (Theophylline Elixir)',
+            description: 'مكونات الوصفة بالتفصيل ومقاديرها ودور كل مادة.',
+            cards: [
+              {
+                id: 'c3-1', type: 'text', title: 'مكونات الوصفة ودور كل مادة',
+                subPanels: [
+                  { title: 'تيوفيللين (5.3 غ)', content: 'مادة فعالة (موسع قصبي).', icon: 'atom', color: 'purple' },
+                  { title: 'حمض الليمون (10 غ)', content: 'لجعل الوسط حمضي (ثبات التيوفيللين).', icon: 'flask', color: 'blue' },
+                  { title: 'شراب الغليكوز (44 غ)', content: 'محلي رافع لزوجة.', icon: 'capsule', color: 'purple' },
+                  { title: 'شراب بسيط (132 غ)', content: 'محلي ورافع لزوجة.', icon: 'list', color: 'blue' },
+                  { title: 'غليسرين (50 غ)', content: 'محلي رافع لزوجة ولإخفاء الطعم اللاذع للكحول مذيب مساعد.', icon: 'flame', color: 'purple' },
+                  { title: 'محلول السوربيتول (324 غ)', content: 'محلي.', icon: 'book', color: 'blue' },
+                  { title: 'كحول (200 مل)', content: 'لحل المادة الفعالة وعطر الليمون.', icon: 'flask', color: 'purple' },
+                  { title: 'سكرين صودي (5 غ)', content: 'محلي اصطناعي.', icon: 'atom', color: 'blue' },
+                  { title: 'عطر الليمون (0.5 غ)', content: 'معطر.', icon: 'flame', color: 'purple' },
+                  { title: 'ملون أصفر (0.1 غ) وماء', content: 'ملون، ويضاف الماء المقطر المعقم ككمية كافية حتى 1000 مل.', icon: 'flask', color: 'blue' }
+                ]
+              }
+            ]
+          }
+        ]
       }
     ]
   },
@@ -1044,35 +1114,6 @@ export const subjectContents: Record<string, SubjectContent> = {
                   { title: 'هرمونات', content: 'أنسولين، هرمون النمو (GH)', icon: 'flame', color: 'blue' },
                   { title: 'السموم', content: 'سم الدفتريا، سم الأفعى', icon: 'hourglass', color: 'purple' },
                   { title: 'الغلوبولينات المناعية', content: 'IgA, IgM, IgG, IgE, IgD', icon: 'book', color: 'blue' }
-                ]
-              }
-            ]
-          },
-          {
-            id: 'cap4',
-            title: 'تصنيفات هامة أخرى',
-            description: 'التصنيف الغذائي والاستقلابي للحموض الأمينية.',
-            cards: [
-              {
-                id: 'c4-1', type: 'text', title: 'أ. التصنيف الغذائي والحيوي',
-                content: [
-                  'يُصنف الحموض بناءً على قدرة الجسم على تصنيعها:'
-                ],
-                subPanels: [
-                  { title: 'أساسية', content: 'لا يستطيع الجسم تصنيعها ويجب تناولها في الغذاء (مثل: الفالين، الليوسين، الميثيونين...).', icon: 'flame', color: 'purple' },
-                  { title: 'غير أساسية', content: 'يستطيع الجسم تصنيعها داخلياً (مثل: الألانين، الأسبارتات...).', icon: 'atom', color: 'blue' },
-                  { title: 'أساسية مشروطة', content: 'يحتاجها الجسم من الغذاء فقط في حالات المرض أو الإجهاد (مثل: الأرجنين).', icon: 'capsule', color: 'purple' }
-                ]
-              },
-              {
-                id: 'c4-2', type: 'text', title: 'ب. التصنيف الاستقلابي',
-                content: [
-                  'يُصنف الحموض بناءً على ناتج تقويضها (تكسيرها) داخل الجسم:'
-                ],
-                subPanels: [
-                  { title: 'مولدة للسكر', content: 'تتحول مساراتها إلى غلوكوز.', icon: 'flask', color: 'blue' },
-                  { title: 'مولدة للكيتون', content: 'تتحول إلى أجسام كيتونية (مثل: الليوسين واللايسين).', icon: 'flame', color: 'purple' },
-                  { title: 'مختلطة', content: 'تولد السكر والكيتون معاً (مثل التريبتوفان والفينيل ألانين).', icon: 'atom', color: 'blue' }
                 ]
               }
             ]

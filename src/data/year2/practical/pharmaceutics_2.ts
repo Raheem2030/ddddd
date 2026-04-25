@@ -593,7 +593,7 @@ export const pharmaceutics_2: SubjectContent = {
                 },
                 {
                   "title": "الشراب العطري (Flavored Syrup)",
-                  "content": "يحوي ماء وسكر وزيوت عطرية. يُستخدم لتعطير الأشكال الصيدلانية.",
+                  "content": "يحوي ماء وسكر وزيوت عطرية. يُستخدم لتقطير الأشكال الصيدلانية.",
                   "icon": "atom",
                   "color": "purple"
                 },

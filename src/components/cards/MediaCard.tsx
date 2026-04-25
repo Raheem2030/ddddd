@@ -9,9 +9,8 @@ interface MediaCardProps {
 }
 
 export function MediaCard({ data, hideWrapper }: MediaCardProps) {
-  const [selectedItem, setSelectedItem] = useState<MediaItem | null>(null);
-
   const items = data.items || [];
+  const [selectedItem, setSelectedItem] = useState<MediaItem | null>(items.length === 1 ? items[0] : null);
 
   const getIcon = (type: string) => {
     switch (type) {
@@ -30,12 +29,14 @@ export function MediaCard({ data, hideWrapper }: MediaCardProps) {
             {getIcon(selectedItem.type)}
             {selectedItem.title}
           </h2>
-          <button 
-            onClick={() => setSelectedItem(null)}
-            className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
-          >
-            <ArrowLeft className="w-5 h-5 text-white" />
-          </button>
+          {items.length > 1 && (
+            <button 
+              onClick={() => setSelectedItem(null)}
+              className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
+            >
+              <ArrowLeft className="w-5 h-5 text-white" />
+            </button>
+          )}
         </div>
         
         <div className="flex-1 flex flex-col items-center justify-center overflow-hidden rounded-2xl bg-black/40 border border-[var(--color-pharma-glass-border)] relative group z-10">

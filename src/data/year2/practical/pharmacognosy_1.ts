@@ -195,18 +195,26 @@ export const pharmacognosy_1: SubjectContent = {
       capsules: [
         {
           id: 'cap2-1',
-          title: 'تسجيل صوتي عن الكوسا',
-          description: 'ملاحظة صوتية وتلخيص لبعض المعلومات.',
+          title: 'الكوسا',
+          description: 'تفاصيل وملاحظة صوتية عن الكوسا',
           cards: [
             {
               id: 'c2-1-1',
+              type: 'text',
+              title: 'معلومات الكوسا',
+              content: [
+                'الكوسا - cucurbita pepo - الفصيلة القرعية : cucurbitaceae'
+              ]
+            },
+            {
+              id: 'c2-1-2',
               type: 'media',
               title: 'تسجيل صوتي: الكوسا',
               items: [
                 {
                   id: 'm1',
                   type: 'audio',
-                  title: 'الكوسا - cucurbita pepo - الفصيلة القرعية : cucurbitaceae',
+                  title: 'ملاحظة صوتية حول الكوسا',
                   url: 'https://archive.org/download/20260425_20260425_2331/%D9%83%D9%88%D8%B3%D8%A7.mp3',
                   caption: 'استمع للتسجيل الصوتي'
                 }

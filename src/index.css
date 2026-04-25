@@ -47,4 +47,12 @@ body {
 }
 .markdown-body .katex {
   font-size: 1.125rem;
+  direction: ltr;
+  display: inline-block;
+  unicode-bidi: isolate;
+}
+.markdown-body code {
+  direction: ltr;
+  display: inline-block;
+  unicode-bidi: isolate;
 }

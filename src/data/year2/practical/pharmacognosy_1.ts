@@ -81,7 +81,7 @@ export const pharmacognosy_1: SubjectContent = {
             {
               id: 'c2-3',
               type: 'media',
-              title: 'صورة توضيحية لتركيب المجهر',
+              title: 'وسائط توضيحية لتركيب المجهر',
               items: [
                 {
                   id: 'm1',
@@ -89,6 +89,13 @@ export const pharmacognosy_1: SubjectContent = {
                   title: 'أقسام المجهر الضوئي',
                   url: 'https://i.imgur.com/c0au5jL.jpeg',
                   caption: 'يوضح الشكل الأقسام المعدنية والزجاجية للمجهر الضوئي العادي.'
+                },
+                {
+                  id: 'm2',
+                  type: 'audio',
+                  title: 'ملاحظة صوتية: شرح مبسط عن المجهر',
+                  url: 'https://actions.google.com/sounds/v1/water/rain_on_roof.ogg', // استبدل هذا الرابط برابط التسجيل الصوتي الخاص بك
+                  caption: 'يمكنك الاستماع للتسجيل الصوتي بالضغط على زر تشغيل الصوت.'
                 }
               ]
             }
@@ -175,6 +182,34 @@ export const pharmacognosy_1: SubjectContent = {
                 'تقسم المجاهر الإلكترونية إلى نوعين:',
                 '1. المجهر الإلكتروني الماسح (Scanning Electron Microscope).',
                 '2. المجهر الإلكتروني النفاذ (Transmission Electron Microscope).'
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      id: 'ch-prac-2',
+      title: 'الجلسة العملية الثانية: أمثلة على العقاقير',
+      description: 'دراسية تفصيلية عن بعض العقاقير.',
+      capsules: [
+        {
+          id: 'cap2-1',
+          title: 'تسجيل صوتي عن الكوسا',
+          description: 'ملاحظة صوتية وتلخيص لبعض المعلومات.',
+          cards: [
+            {
+              id: 'c2-1-1',
+              type: 'media',
+              title: 'تسجيل صوتي: الكوسا',
+              items: [
+                {
+                  id: 'm1',
+                  type: 'audio',
+                  title: 'الكوسا - cucurbita pepo - الفصيلة القرعية : cucurbitaceae',
+                  url: 'https://archive.org/download/20260425_20260425_2331/%D9%83%D9%88%D8%B3%D8%A7.mp3',
+                  caption: 'استمع للتسجيل الصوتي'
+                }
               ]
             }
           ]

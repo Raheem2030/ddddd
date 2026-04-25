@@ -77,6 +77,20 @@ export const pharmacognosy_1: SubjectContent = {
                 '4. المكثف الضوئي (Condenser).',
                 '5. المنبع الضوئي (Lamp).'
               ]
+            },
+            {
+              id: 'c2-3',
+              type: 'media',
+              title: 'صورة توضيحية لتركيب المجهر',
+              items: [
+                {
+                  id: 'm1',
+                  type: 'image',
+                  title: 'أقسام المجهر الضوئي',
+                  url: 'https://i.imgur.com/c0au5jL.jpeg',
+                  caption: 'يوضح الشكل الأقسام المعدنية والزجاجية للمجهر الضوئي العادي.'
+                }
+              ]
             }
           ]
         },

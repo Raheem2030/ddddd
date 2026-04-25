@@ -62,8 +62,8 @@ export function MediaCard({ data, hideWrapper }: MediaCardProps) {
           )}
           
           {selectedItem.caption && (
-            <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/90 to-transparent">
-              <p className="text-sm text-gray-200 text-center">{selectedItem.caption}</p>
+            <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/90 to-transparent pointer-events-none">
+              <p className="text-sm text-gray-200 text-center pointer-events-auto">{selectedItem.caption}</p>
             </div>
           )}
         </div>

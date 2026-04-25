@@ -13,6 +13,7 @@ export function SubjectDashboard() {
 
   const subject = subjects.find(s => s.id === id);
   const content = subjectContents[id || ''];
+  console.log("Subject:", subject?.name, "Chapters:", content?.chapters);
 
   useEffect(() => {
     if (!subject) {

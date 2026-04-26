@@ -64,7 +64,6 @@ export function MediaCard({ data, hideWrapper }: MediaCardProps) {
                 className="w-full"
                 preload="metadata"
                 playsInline
-                referrerPolicy="no-referrer"
               >
                 متصفحك لا يدعم مشغل الصوت.
               </audio>

@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { ContentCard, MediaItem } from '../../types';
 import { cn } from '../../lib/utils';
-import { Image as ImageIcon, PlayCircle, BarChart2, Headphones, ArrowLeft, Play, Pause, Volume2 } from 'lucide-react';
+import { Image as ImageIcon, PlayCircle, BarChart2, Headphones, ArrowLeft, Play, Pause, AlertCircle } from 'lucide-react';
+import { Howl, Howler } from 'howler';
 
 interface MediaCardProps {
   data: ContentCard;
@@ -114,89 +115,95 @@ export function MediaCard({ data, hideWrapper }: MediaCardProps) {
 }
 
 function CustomAudioPlayer({ url }: { url: string }) {
-  const audioRef = useRef<HTMLAudioElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
-  
+  const howlRef = useRef<Howl | null>(null);
+  const rafRef = useRef<number | null>(null);
+
   useEffect(() => {
-    // Reset state when URL changes
+    Howler.autoUnlock = true;
+    
     setIsPlaying(false);
     setProgress(0);
     setDuration(0);
     setErrorMsg(null);
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current.load();
+    
+    if (howlRef.current) {
+      howlRef.current.unload();
     }
+
+    const sound = new Howl({
+      src: [url],
+      html5: true, // Force HTML5 Audio to allow streaming, bypassing Web Audio API CORS issues sometimes, but let's see. If we need WebAudio for better Telegram support we can try without it, but HTML5 is better for large files. Actually Telegram WebView WebAudio might be the key. Let's try html5: true first, if it fails maybe WebAudio. Wait, typical telegram webview audio issue is fixed by using Web Audio API (html5: false), allowing audio to be decoded. But CORS might block it. Let's use format: ['mp3'] just in case.
+      format: ['mp3'],
+      onload: () => {
+        setDuration(sound.duration());
+      },
+      onplay: () => {
+        setIsPlaying(true);
+        const updatePosition = () => {
+          if (sound.playing()) {
+            setProgress(sound.seek() as number);
+            rafRef.current = requestAnimationFrame(updatePosition);
+          }
+        };
+        rafRef.current = requestAnimationFrame(updatePosition);
+      },
+      onpause: () => {
+        setIsPlaying(false);
+        if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      },
+      onstop: () => {
+        setIsPlaying(false);
+        setProgress(0);
+        if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      },
+      onend: () => {
+        setIsPlaying(false);
+        setProgress(0);
+        if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      },
+      onloaderror: (id, err) => {
+        setErrorMsg(`خطأ في التحميل: ${err}`);
+      },
+      onplayerror: (id, err) => {
+        sound.once('unlock', () => {
+          sound.play();
+        });
+        setErrorMsg(`خطأ في التشغيل: ${err} (في انتظار تفاعل المستخدم)`);
+      }
+    });
+
+    howlRef.current = sound;
+
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      if (howlRef.current) howlRef.current.unload();
+    };
   }, [url]);
 
   const togglePlay = () => {
-    if (!audioRef.current) return;
-
-    if (isPlaying) {
-      audioRef.current.pause();
-      setIsPlaying(false);
+    if (!howlRef.current) return;
+    
+    if (howlRef.current.playing()) {
+      howlRef.current.pause();
     } else {
-      setErrorMsg(null);
-      // Using a direct play call fixes issues in Telegram webviews requiring user interaction
-      const playPromise = audioRef.current.play();
-      
-      if (playPromise !== undefined) {
-        playPromise.then(() => {
-          setIsPlaying(true);
-        }).catch((error) => {
-          setErrorMsg(`خطأ التشغيل: ${error.name} - ${error.message}`);
-          console.error("Audio playback error:", error);
-          // Fallback for Telegram iOS
-          audioRef.current?.load();
-          audioRef.current?.play().then(() => {
-            setIsPlaying(true);
-          }).catch(e => {
-            console.log("فشل التشغيل النهائي:", e);
-          });
-        });
-      }
+      howlRef.current.play();
     }
-  };
-
-  const handleTimeUpdate = () => {
-    if (audioRef.current) {
-      setProgress(audioRef.current.currentTime);
-    }
-  };
-
-  const handleLoadedMetadata = () => {
-    if (audioRef.current) {
-      setDuration(audioRef.current.duration);
-    }
-  };
-
-  const handleAudioError = (e: any) => {
-    const error = e.target.error;
-    let msg = "حدث خطأ غير معروف";
-    if (error) {
-      switch (error.code) {
-        case 1: msg = "تم إلغاء جلب الملف."; break;
-        case 2: msg = "حدث خطأ في الشبكة."; break;
-        case 3: msg = "حدث خطأ في فك تشفير الصوت."; break;
-        case 4: msg = `الملف غير موجود (404) أو الرابط خطأ أو محظور (CORS).`; break;
-      }
-    }
-    setErrorMsg(msg);
   };
 
   const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
     const time = Number(e.target.value);
-    if (audioRef.current) {
-      audioRef.current.currentTime = time;
+    if (howlRef.current) {
+      howlRef.current.seek(time);
       setProgress(time);
     }
   };
 
   const formatTime = (time: number) => {
-    if (isNaN(time)) return "00:00";
+    if (isNaN(time) || !isFinite(time)) return "00:00";
     const mins = Math.floor(time / 60);
     const secs = Math.floor(time % 60);
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
@@ -205,7 +212,8 @@ function CustomAudioPlayer({ url }: { url: string }) {
   return (
     <div className="w-full max-w-md p-6 relative z-20 flex flex-col items-center gap-6">
       {errorMsg && (
-        <div className="w-full p-3 mb-2 text-sm text-red-100 bg-red-900/80 border border-red-500 rounded-lg text-center" dir="rtl">
+        <div className="w-full p-3 mb-2 text-sm text-red-100 bg-red-900/80 border border-red-500 rounded-lg text-center flex items-center gap-2 justify-center" dir="rtl">
+          <AlertCircle className="w-4 h-4" />
           {errorMsg}
         </div>
       )}
@@ -215,18 +223,6 @@ function CustomAudioPlayer({ url }: { url: string }) {
       </div>
       
       <div className="w-full space-y-4">
-        <audio
-          ref={audioRef}
-          src={url}
-          onTimeUpdate={handleTimeUpdate}
-          onLoadedMetadata={handleLoadedMetadata}
-          onEnded={() => setIsPlaying(false)}
-          onError={handleAudioError}
-          preload="auto"
-          playsInline
-          crossOrigin="anonymous"
-        />
-        
         <div className="flex items-center gap-4 dir-ltr" dir="ltr">
           <span className="text-xs text-gray-400 font-mono w-10 text-right">
             {formatTime(progress)}

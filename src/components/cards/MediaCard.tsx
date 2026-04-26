@@ -118,12 +118,14 @@ function CustomAudioPlayer({ url }: { url: string }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
   
   useEffect(() => {
     // Reset state when URL changes
     setIsPlaying(false);
     setProgress(0);
     setDuration(0);
+    setErrorMsg(null);
     if (audioRef.current) {
       audioRef.current.pause();
       audioRef.current.load();
@@ -137,6 +139,7 @@ function CustomAudioPlayer({ url }: { url: string }) {
       audioRef.current.pause();
       setIsPlaying(false);
     } else {
+      setErrorMsg(null);
       // Using a direct play call fixes issues in Telegram webviews requiring user interaction
       const playPromise = audioRef.current.play();
       
@@ -144,6 +147,7 @@ function CustomAudioPlayer({ url }: { url: string }) {
         playPromise.then(() => {
           setIsPlaying(true);
         }).catch((error) => {
+          setErrorMsg(`خطأ التشغيل: ${error.name} - ${error.message}`);
           console.error("Audio playback error:", error);
           // Fallback for Telegram iOS
           audioRef.current?.load();
@@ -169,6 +173,20 @@ function CustomAudioPlayer({ url }: { url: string }) {
     }
   };
 
+  const handleAudioError = (e: any) => {
+    const error = e.target.error;
+    let msg = "حدث خطأ غير معروف";
+    if (error) {
+      switch (error.code) {
+        case 1: msg = "تم إلغاء جلب الملف."; break;
+        case 2: msg = "حدث خطأ في الشبكة."; break;
+        case 3: msg = "حدث خطأ في فك تشفير الصوت."; break;
+        case 4: msg = `الملف غير موجود (404) أو الرابط خطأ أو محظور (CORS).`; break;
+      }
+    }
+    setErrorMsg(msg);
+  };
+
   const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
     const time = Number(e.target.value);
     if (audioRef.current) {
@@ -186,6 +204,12 @@ function CustomAudioPlayer({ url }: { url: string }) {
 
   return (
     <div className="w-full max-w-md p-6 relative z-20 flex flex-col items-center gap-6">
+      {errorMsg && (
+        <div className="w-full p-3 mb-2 text-sm text-red-100 bg-red-900/80 border border-red-500 rounded-lg text-center" dir="rtl">
+          {errorMsg}
+        </div>
+      )}
+      
       <div className="w-20 h-20 rounded-full bg-[var(--color-pharma-primary)]/10 flex items-center justify-center border border-[var(--color-pharma-primary)]/30">
         <Headphones className="w-10 h-10 text-[var(--color-pharma-primary)]" />
       </div>
@@ -197,6 +221,7 @@ function CustomAudioPlayer({ url }: { url: string }) {
           onTimeUpdate={handleTimeUpdate}
           onLoadedMetadata={handleLoadedMetadata}
           onEnded={() => setIsPlaying(false)}
+          onError={handleAudioError}
           preload="auto"
           playsInline
           crossOrigin="anonymous"

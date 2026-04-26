@@ -215,7 +215,7 @@ export const pharmacognosy_1: SubjectContent = {
                   id: 'm1',
                   type: 'audio',
                   title: 'ملاحظة صوتية حول الكوسا',
-                  url: 'https://archive.org/download/20260425_20260425_2331/%D9%83%D9%88%D8%B3%D8%A7.mp3',
+                  url: 'https://archive.org/download/kooosa/kooosa.mp3',
                   caption: 'استمع للتسجيل الصوتي'
                 }
               ]

@@ -59,13 +59,13 @@ export function MediaCard({ data, hideWrapper }: MediaCardProps) {
             <div className="w-full p-4 relative z-20">
               <audio 
                 key={selectedItem.url}
+                src={selectedItem.url}
                 controls 
                 className="w-full"
-                preload="auto"
+                preload="metadata"
                 playsInline
+                referrerPolicy="no-referrer"
               >
-                <source src={selectedItem.url} type="audio/mpeg" />
-                <source src={selectedItem.url} type="audio/mp3" />
                 متصفحك لا يدعم مشغل الصوت.
               </audio>
             </div>

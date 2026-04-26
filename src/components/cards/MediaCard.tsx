@@ -131,21 +131,29 @@ function CustomAudioPlayer({ url }: { url: string }) {
   }, [url]);
 
   const togglePlay = () => {
-    if (audioRef.current) {
-      if (isPlaying) {
-        audioRef.current.pause();
-      } else {
-        // Using a direct play call fixes issues in Telegram webviews requiring user interaction
-        const playPromise = audioRef.current.play();
-        if (playPromise !== undefined) {
-          playPromise.catch((error) => {
-            console.error("Audio playback error:", error);
-            // Fallback for Telegram iOS sometimes needs to trigger via link
-            window.open(url, '_blank');
+    if (!audioRef.current) return;
+
+    if (isPlaying) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      // Using a direct play call fixes issues in Telegram webviews requiring user interaction
+      const playPromise = audioRef.current.play();
+      
+      if (playPromise !== undefined) {
+        playPromise.then(() => {
+          setIsPlaying(true);
+        }).catch((error) => {
+          console.error("Audio playback error:", error);
+          // Fallback for Telegram iOS
+          audioRef.current?.load();
+          audioRef.current?.play().then(() => {
+            setIsPlaying(true);
+          }).catch(e => {
+            console.log("فشل التشغيل النهائي:", e);
           });
-        }
+        });
       }
-      setIsPlaying(!isPlaying);
     }
   };
 
@@ -191,6 +199,7 @@ function CustomAudioPlayer({ url }: { url: string }) {
           onEnded={() => setIsPlaying(false)}
           preload="auto"
           playsInline
+          crossOrigin="anonymous"
         />
         
         <div className="flex items-center gap-4 dir-ltr" dir="ltr">

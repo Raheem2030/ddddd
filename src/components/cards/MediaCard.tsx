@@ -136,7 +136,7 @@ function CustomAudioPlayer({ url }: { url: string }) {
 
     const sound = new Howl({
       src: [url],
-      html5: true, // Use HTML5 audio mode since the file is local
+      html5: false, // Set to false to force Web Audio API instead of HTML audio tag. This solves iOS Telegram WebView restrictions.
       format: ['mp3'],
       onload: () => {
         setDuration(sound.duration());

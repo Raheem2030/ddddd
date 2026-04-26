@@ -51,14 +51,18 @@ export function MediaCard({ data, hideWrapper }: MediaCardProps) {
             <video 
               src={selectedItem.url} 
               controls 
-              className="w-full h-full object-contain"
+              className="w-full h-full object-contain relative z-20"
+              playsInline
             />
           ) : (
-            <audio 
-              src={selectedItem.url} 
-              controls 
-              className="w-full"
-            />
+            <div className="w-full p-4 relative z-20">
+              <audio 
+                src={selectedItem.url} 
+                controls 
+                className="w-full"
+                preload="metadata"
+              />
+            </div>
           )}
           
           {selectedItem.caption && (

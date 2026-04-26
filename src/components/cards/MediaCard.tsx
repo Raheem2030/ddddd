@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { ContentCard, MediaItem } from '../../types';
 import { cn } from '../../lib/utils';
-import { Image as ImageIcon, PlayCircle, BarChart2, Headphones, ArrowLeft, ExternalLink } from 'lucide-react';
+import { Image as ImageIcon, PlayCircle, BarChart2, Headphones, ArrowLeft, Play, Pause, Volume2 } from 'lucide-react';
 
 interface MediaCardProps {
   data: ContentCard;
@@ -39,7 +39,7 @@ export function MediaCard({ data, hideWrapper }: MediaCardProps) {
           )}
         </div>
         
-        <div className="flex-1 flex flex-col items-center justify-center overflow-hidden rounded-2xl bg-black/40 border border-[var(--color-pharma-glass-border)] relative group z-10">
+        <div className="flex-1 flex flex-col items-center justify-center overflow-hidden rounded-2xl bg-black/40 border border-[var(--color-pharma-glass-border)] relative group z-10 w-full">
           {selectedItem.type === 'image' || selectedItem.type === 'diagram' ? (
             <img 
               src={selectedItem.url} 
@@ -56,13 +56,11 @@ export function MediaCard({ data, hideWrapper }: MediaCardProps) {
               playsInline
             />
           ) : (
-            <div className="w-full relative z-20 p-4">
-              <AudioPlayer url={selectedItem.url} />
-            </div>
+            <CustomAudioPlayer url={selectedItem.url} />
           )}
           
           {selectedItem.caption && (
-            <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/90 to-transparent pointer-events-none">
+            <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/90 to-transparent pointer-events-none z-30">
               <p className="text-sm text-gray-200 text-center pointer-events-auto">{selectedItem.caption}</p>
             </div>
           )}
@@ -115,77 +113,116 @@ export function MediaCard({ data, hideWrapper }: MediaCardProps) {
   );
 }
 
-function AudioPlayer({ url }: { url: string }) {
-  const [blobUrl, setBlobUrl] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+function CustomAudioPlayer({ url }: { url: string }) {
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [duration, setDuration] = useState(0);
+  
+  useEffect(() => {
+    // Reset state when URL changes
+    setIsPlaying(false);
+    setProgress(0);
+    setDuration(0);
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.load();
+    }
+  }, [url]);
 
-  const loadAudio = async () => {
-    setLoading(true);
-    setError(false);
-    try {
-      const response = await fetch(url);
-      if (!response.ok) throw new Error('Fetch failed');
-      const blob = await response.blob();
-      setBlobUrl(URL.createObjectURL(blob));
-    } catch (err) {
-      console.error('Error fetching audio:', err);
-      setError(true);
-    } finally {
-      setLoading(false);
+  const togglePlay = () => {
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.pause();
+      } else {
+        // Using a direct play call fixes issues in Telegram webviews requiring user interaction
+        const playPromise = audioRef.current.play();
+        if (playPromise !== undefined) {
+          playPromise.catch((error) => {
+            console.error("Audio playback error:", error);
+            // Fallback for Telegram iOS sometimes needs to trigger via link
+            window.open(url, '_blank');
+          });
+        }
+      }
+      setIsPlaying(!isPlaying);
     }
   };
 
+  const handleTimeUpdate = () => {
+    if (audioRef.current) {
+      setProgress(audioRef.current.currentTime);
+    }
+  };
+
+  const handleLoadedMetadata = () => {
+    if (audioRef.current) {
+      setDuration(audioRef.current.duration);
+    }
+  };
+
+  const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const time = Number(e.target.value);
+    if (audioRef.current) {
+      audioRef.current.currentTime = time;
+      setProgress(time);
+    }
+  };
+
+  const formatTime = (time: number) => {
+    if (isNaN(time)) return "00:00";
+    const mins = Math.floor(time / 60);
+    const secs = Math.floor(time % 60);
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  };
+
   return (
-    <div className="w-full p-6 flex flex-col items-center gap-4 bg-black/40 rounded-2xl border border-white/5 backdrop-blur-md">
-      {blobUrl ? (
-        <div className="w-full flex justify-center flex-col items-center gap-4">
-          <audio
-            src={blobUrl}
-            controls
-            autoPlay
-            playsInline
-            className="w-full"
-          />
-        </div>
-      ) : (
-        <div className="text-center space-y-4">
-          <Headphones className="w-12 h-12 mx-auto text-[var(--color-pharma-primary)] opacity-80" />
-          <div>
-            <p className="text-base font-bold text-gray-200">مقطع صوتي</p>
-            <p className="text-sm text-gray-400 mt-2 max-w-[280px] mx-auto text-center leading-relaxed">
-              لضمان عمل الصوت داخل تطبيق تيليجرام، يرجى الضغط على زر التحميل أدناه.
-            </p>
-          </div>
-          
-          <button
-            onClick={loadAudio}
-            disabled={loading}
-            className="mx-auto bg-[var(--color-pharma-primary)] text-black font-bold px-6 py-3 rounded-xl flex items-center justify-center gap-2 hover:opacity-90 transition-opacity min-w-[180px]"
-          >
-            {loading ? (
-              <div className="animate-spin w-5 h-5 border-2 border-black border-t-transparent rounded-full" />
-            ) : (
-              <PlayCircle className="w-5 h-5" />
-            )}
-            {loading ? 'جاري التحميل...' : 'تحميل وتشغيل'}
-          </button>
-          
-          {error && (
-             <p className="text-red-400 text-xs">تعذر التحميل المباشر، يرجى الفتح في المتصفح الخارجي.</p>
-          )}
-        </div>
-      )}
+    <div className="w-full max-w-md p-6 relative z-20 flex flex-col items-center gap-6">
+      <div className="w-20 h-20 rounded-full bg-[var(--color-pharma-primary)]/10 flex items-center justify-center border border-[var(--color-pharma-primary)]/30">
+        <Headphones className="w-10 h-10 text-[var(--color-pharma-primary)]" />
+      </div>
       
-      <a 
-        href={url}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="mt-2 flex items-center gap-2 text-sm text-[var(--color-pharma-primary)] hover:opacity-80 transition-opacity bg-white/5 py-2 px-6 rounded-full border border-[var(--color-pharma-primary)]/30"
-      >
-        <ExternalLink className="w-4 h-4" />
-        فتح في المتصفح الخارجي
-      </a>
+      <div className="w-full space-y-4">
+        <audio
+          ref={audioRef}
+          src={url}
+          onTimeUpdate={handleTimeUpdate}
+          onLoadedMetadata={handleLoadedMetadata}
+          onEnded={() => setIsPlaying(false)}
+          preload="auto"
+          playsInline
+        />
+        
+        <div className="flex items-center gap-4 dir-ltr" dir="ltr">
+          <span className="text-xs text-gray-400 font-mono w-10 text-right">
+            {formatTime(progress)}
+          </span>
+          <input
+            type="range"
+            min="0"
+            max={duration || 100}
+            value={progress}
+            onChange={handleSeek}
+            className="flex-1 h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-[var(--color-pharma-primary)]"
+          />
+          <span className="text-xs text-gray-400 font-mono w-10">
+            {formatTime(duration)}
+          </span>
+        </div>
+
+        <div className="flex justify-center mt-2">
+          <button
+            onClick={togglePlay}
+            className="w-14 h-14 flex items-center justify-center rounded-full bg-[var(--color-pharma-primary)] text-black hover:scale-105 transition-transform"
+          >
+            {isPlaying ? (
+              <Pause className="w-6 h-6 fill-black" />
+            ) : (
+              <Play className="w-6 h-6 fill-black ml-1" />
+            )}
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

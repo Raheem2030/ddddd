@@ -1,4 +1,5 @@
 import { SubjectContent } from '../../../types';
+import kosaAudio from '../../../assets/kosa.mp3';
 
 export const pharmacognosy_1: SubjectContent = {
   subjectId: '2-2-4',
@@ -215,7 +216,7 @@ export const pharmacognosy_1: SubjectContent = {
                   id: 'm1',
                   type: 'audio',
                   title: 'ملاحظة صوتية حول الكوسا',
-                  url: '/kosa.mp3',
+                  url: kosaAudio,
                   caption: 'استمع للتسجيل الصوتي'
                 }
               ]

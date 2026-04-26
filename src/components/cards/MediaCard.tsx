@@ -1,229 +1,191 @@
-import { SubjectContent } from '../../../types';
+import React, { useState } from 'react';
+import { ContentCard, MediaItem } from '../../types';
+import { cn } from '../../lib/utils';
+import { Image as ImageIcon, PlayCircle, BarChart2, Headphones, ArrowLeft, ExternalLink } from 'lucide-react';
 
-export const pharmacognosy_1: SubjectContent = {
-  subjectId: '2-2-4',
-  chapters: [
-    {
-      id: 'ch-prac-1',
-      title: 'الجلسة العملية الأولى: المجهر الضوئي العادي',
-      description: 'مقدمة في فحص العقاقير وتعريف المجهر وأقسامه واستخدامه والمحافظة عليه والمجاهر الإلكترونية.',
-      capsules: [
-        {
-          id: 'cap1',
-          title: 'مقدمة في فحص العقاقير وتعريف المجهر',
-          description: 'أهمية الفحص المجهري، وأنواع المحضرات العملية، وتعريف المجهر.',
-          cards: [
-            {
-              id: 'c1-1',
-              type: 'text',
-              title: 'أهمية الفحص المجهري',
-              content: [
-                '• إن القسم الأعظم من العقاقير يتميز ببنية نباتية نسيجية خاصة.',
-                '• لذلك كان لابد من دراستها وفهمها بشكل عميق، ليتمكن الطالب من فحصها، والتعرف عليها.',
-                '• الغاية من ذلك: تحديد هوية هذا العقار، والتأكد من طبيعتها، وكشف غشها.'
-              ]
-            },
-            {
-              id: 'c1-2',
-              type: 'text',
-              title: 'أنواع المحضرات العملية',
-              content: [
-                'يقوم الطالب بتحضير نوعين من المحضرات في الجلسات العملية لمادة العقاقير:',
-                '• محضرات المقاطع الطولية، أو العرضية، أو البشروية، للعقار.',
-                '• محضرات المساحيق للأجزاء المستعملة من العقار، ودراسة عناصرها التشخيصية.',
-                '• لذلك كان لزاماً علينا التعرف على الأداة الهامة التي تساعد الطالب في هذه الدراسة، ألا وهي المجهر الضوئي العادي (Microscope).'
-              ]
-            },
-            {
-              id: 'c1-3',
-              type: 'text',
-              title: 'تعريف المجهر (Microscope)',
-              content: [
-                'المجهر أداة علمية دقيقة تستخدم في تكبير الأجسام الصغيرة التي لا يمكن رؤيتها بالعين المجردة.'
-              ]
-            }
-          ]
-        },
-        {
-          id: 'cap2',
-          title: 'أقسام المجهر الضوئي العادي (Light Microscope)',
-          description: 'يتركب المجهر الضوئي العادي من قسمين أساسين: القسم المعدني والقسم الزجاجي.',
-          cards: [
-            {
-              id: 'c2-1',
-              type: 'text',
-              title: 'أ - القسم المعدني (الميكانيكي)',
-              content: [
-                'يضم هذا القسم:',
-                '1. القاعدة (Base): قطعة فولاذية ثقيلة تؤمن سطح استناد قوي ومتين للمجهر.',
-                '2. الحامل أو الذراع (Arm): يستخدم لحمل المجهر.',
-                '3. أنبوب جسم المجهر (Body Tube): وهو أنبوب أسطواني، تقع في أعلاه العدسة العينية، أو العدستان العينيتان، ويتصل من الأسفل بالقرص الدوار؛ وهو قطعة دائرية تحمل العدسات الجسمية (Objective Lenses).',
-                '4. لوحة الشرائح أو المسرح (Stage): هي لوحة مربعة، يقع في مركزها ثقب دائري يسمح بمرور الضوء للعينة المدروسة، وعلى اللوحة ملقطان لتثبيت الشريحة.',
-                '5. في أسفل لوحة الشرائح ويسارها لولبا تحريك الشريحة؛ أحدهما يحرك الشريحة للأمام والخلف، والثاني يحركها لليمين واليسار.',
-                '6. لولبا الإحكام السريع (Coarse adjustment knob) والبطيء (Fine adjustment knob): يوجدان على جانبي حامل المجهر.',
-                ' - وظيفة لولب الإحكام السريع خفض لوحة الشرائح ورفعها على نحو ملحوظ.',
-                ' - أما لولب الإحكام البطيء فوظيفته رفع لوحة الشرائح وخفضها على نحو غير ملحوظ، وبطيء، لإحكام الرؤية، والحصول على أدق شكل ممكن للعينة المدروسة.'
-              ]
-            },
-            {
-              id: 'c2-2',
-              type: 'text',
-              title: 'ب - القسم الزجاجي',
-              content: [
-                'يضم هذا القسم:',
-                '1. العدسات العينية (Ocular Lenses): وهي ذات تكبير (x6, x10, x16, 20).',
-                '2. العدسات الجسمية أو الشيئية (Objective Lenses): يتناسب طول العدسة وقوة تكبيرها طرداً، وهي ذات تكبير (x4, x10, x40, 100x).',
-                '3. تسمى العدسة الجسمية ذات التكبير (100) العدسة الغاطسة الزيتية (Oil Immersion)؛ لأن استخدامها يتطلب غطسها بسائل ما يكون عادة (زيت الأرز).',
-                '4. المكثف الضوئي (Condenser).',
-                '5. المنبع الضوئي (Lamp).'
-              ]
-            },
-            {
-              id: 'c2-3',
-              type: 'media',
-              title: 'وسائط توضيحية لتركيب المجهر',
-              items: [
-                {
-                  id: 'm1',
-                  type: 'image',
-                  title: 'أقسام المجهر الضوئي',
-                  url: 'https://i.imgur.com/c0au5jL.jpeg',
-                  caption: 'يوضح الشكل الأقسام المعدنية والزجاجية للمجهر الضوئي العادي.'
-                },
-                {
-                  id: 'm2',
-                  type: 'audio',
-                  title: 'ملاحظة صوتية: شرح مبسط عن المجهر',
-                  url: 'https://actions.google.com/sounds/v1/water/rain_on_roof.ogg', // استبدل هذا الرابط برابط التسجيل الصوتي الخاص بك
-                  caption: 'يمكنك الاستماع للتسجيل الصوتي بالضغط على زر تشغيل الصوت.'
-                }
-              ]
-            }
-          ]
-        },
-        {
-          id: 'cap3',
-          title: 'التكبير والقوة الفاصلة',
-          description: 'التكبير الكلي والقوة الفاصلة للمجهر.',
-          cards: [
-            {
-              id: 'c3-1',
-              type: 'text',
-              title: 'التكبير الكلي والقوة الفاصلة للمجهر',
-              content: [
-                '| المصطلح | الشرح والقيمة |',
-                '|---|---|',
-                '| التكبير الكلي للمجهر | قوة تكبير العدسة العينية × قوة تكبير العدسة الجسمية |',
-                '| القوة الفاصلة (Resolution Power) أو قوة التمييز | هي أقصر مسافة يمكن عندها التمييز بين نقطتين متجاورتين |',
-                '| القوة الفاصلة في المجاهر الضوئية | تساوي (0.2) ميكرون |',
-                '| القوة الفاصلة في المجاهر الإلكترونية | تساوي (2) أنغستروم |'
-              ]
-            }
-          ]
-        },
-        {
-          id: 'cap4',
-          title: 'استخدام المجهر والمحافظة عليه',
-          description: 'طرق استخدام المجهر والعناية به.',
-          cards: [
-            {
-              id: 'c4-1',
-              type: 'text',
-              title: 'رابعاً: استخدام المجهر والعناية به',
-              content: [
-                'المجهر أداة غالية الثمن، ودقيقة، يمكن إعطابها بسهولة؛ لذلك على المرء توخي الحذر عند استعماله، وتحريكه، ومراعاة الأمور الآتية:',
-                '• مسح العدسات الجسمية، والعينية، والمكثف، وغطاء المنبع الضوئي، بورق السجائر لإزالة أي أثر للغبار.',
-                '• خفض لوحة الشرائح قليلاً بواسطة لولب الإحكام السريع، ووضع العدسة الشيئية الصغرى في مركزها الصحيح.',
-                '• وضع الشريحة جاهزة على المنضدة، وتثبيتها، ورفع المنضدة قليلاً.',
-                '• تحريك الإحكام السريع حتى تتضح الصورة، ثم استخدام لولب الإحكام البطيء لتتوضح الصورة بشكل أفضل.',
-                '• وضع العدسة الشيئية المطلوبة مكان الصغرى للحصول على تكبير أفضل بواسطة القرص الدوار.',
-                '• تحريك لولب الإحكام السريع ثم البطيء لتوضيح الساحة، مع مراعاة عدم اصطدام العدسة بالشريحة.',
-                '• عند الانتهاء: إطفاء المجهر، وخفض لوحة الشرائح للأسفل، ثم سحب المحضر بعناية.',
-                '• تنظيف العدسات العينية والجسمية، ووضع الغطاء، وحمله من الذراع باليد اليمنى ووضع اليد اليسرى تحت قاعدته.'
-              ]
-            },
-            {
-              id: 'c4-2',
-              type: 'text',
-              title: 'المحافظة على المجهر ومخبر العقاقير',
-              content: [
-                'يجب المحافظة على المجهر ومخبر العقاقير من خلال مراعاة الأمور الآتية:',
-                '• ارتداء المريول الأبيض الخاص بالقسم العملي، واقتناء شيفرات حلاقة حادة.',
-                '• عدم لمس العدسات، أو رفعها من مكانها، تجنباً لخدشها.',
-                '• تنظيف العدسات العينية والجسمية قبل استعمال المجهر وبعده بورق السجائر.',
-                '• حماية المجهر من الغبار؛ لأنه العدو الأول للمجهر.',
-                '• عدم ترك بقايا العقاقير والمساحيق على المجهر أو الطاولات.',
-                '• عدم نقل المساحيق والعقاقير من عبوة لأخرى خوفاً من تلوثها.',
-                '• غسل الأيدي بالماء والصابون عند الانتهاء من العمل.',
-                '• رسم المطلوب من العقار، وتسمية الأجزاء والعناصر التشخيصية على النحو الصحيح.'
-              ]
-            }
-          ]
-        },
-        {
-          id: 'cap5',
-          title: 'المجاهر الإلكترونية',
-          description: 'تعريف المجاهر الإلكترونية وأنواعها.',
-          cards: [
-            {
-              id: 'c5-1',
-              type: 'text',
-              title: 'تعريف المجاهر الإلكترونية',
-              content: [
-                '• يستخدم المجهر الإلكتروني الأشعة الإلكترونية التي لها طول موجة قصير جداً.',
-                '• يستخدم عدسات كهرومغناطيسية يطلق عليها اسم العدسات الإلكترونية بدل الضوء العادي والعدسات الزجاجية في المجهر العادي.'
-              ]
-            },
-            {
-              id: 'c5-2',
-              type: 'text',
-              title: 'أنواع المجاهر الإلكترونية',
-              content: [
-                'تقسم المجاهر الإلكترونية إلى نوعين:',
-                '1. المجهر الإلكتروني الماسح (Scanning Electron Microscope).',
-                '2. المجهر الإلكتروني النفاذ (Transmission Electron Microscope).'
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      id: 'ch-prac-2',
-      title: 'الجلسة العملية الثانية: أمثلة على العقاقير',
-      description: 'دراسية تفصيلية عن بعض العقاقير.',
-      capsules: [
-        {
-          id: 'cap2-1',
-          title: 'الكوسا',
-          description: 'تفاصيل وملاحظة صوتية عن الكوسا',
-          cards: [
-            {
-              id: 'c2-1-1',
-              type: 'text',
-              title: 'معلومات الكوسا',
-              content: [
-                'الكوسا - cucurbita pepo - الفصيلة القرعية : cucurbitaceae'
-              ]
-            },
-            {
-              id: 'c2-1-2',
-              type: 'media',
-              title: 'تسجيل صوتي: الكوسا',
-              items: [
-                {
-                  id: 'm1',
-                  type: 'audio',
-                  title: 'ملاحظة صوتية حول الكوسا',
-                  url: 'https://archive.org/download/kooosa/kooosa.mp3',
-                  caption: 'استمع للتسجيل الصوتي'
-                }
-              ]
-            }
-          ]
-        }
-      ]
+interface MediaCardProps {
+  data: ContentCard;
+  hideWrapper?: boolean;
+}
+
+export function MediaCard({ data, hideWrapper }: MediaCardProps) {
+  const items = data.items || [];
+  const [selectedItem, setSelectedItem] = useState<MediaItem | null>(items.length === 1 ? items[0] : null);
+
+  const getIcon = (type: string) => {
+    switch (type) {
+      case 'image': return <ImageIcon className="w-6 h-6" />;
+      case 'video': return <PlayCircle className="w-6 h-6" />;
+      case 'audio': return <Headphones className="w-6 h-6" />;
+      case 'diagram': return <BarChart2 className="w-6 h-6" />;
+      default: return <ImageIcon className="w-6 h-6" />;
     }
-  ],
-  quizzes: []
-};
+  };
+
+  const Content = selectedItem ? (
+      <div className="w-full h-full flex flex-col">
+        <div className="flex items-center justify-between mb-4 border-b border-[var(--color-pharma-glass-border)] pb-4 z-10 relative">
+          <h2 className="text-xl font-bold text-[var(--color-pharma-primary)] flex items-center gap-2">
+            {getIcon(selectedItem.type)}
+            {selectedItem.title}
+          </h2>
+          {items.length > 1 && (
+            <button 
+              onClick={() => setSelectedItem(null)}
+              className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
+            >
+              <ArrowLeft className="w-5 h-5 text-white" />
+            </button>
+          )}
+        </div>
+        
+        <div className="flex-1 flex flex-col items-center justify-center overflow-hidden rounded-2xl bg-black/40 border border-[var(--color-pharma-glass-border)] relative group z-10">
+          {selectedItem.type === 'image' || selectedItem.type === 'diagram' ? (
+            <img 
+              src={selectedItem.url} 
+              alt={selectedItem.title} 
+              className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105"
+              referrerPolicy="no-referrer"
+            />
+          ) : selectedItem.type === 'video' ? (
+            <video 
+              key={selectedItem.url}
+              src={selectedItem.url} 
+              controls 
+              className="w-full h-full object-contain relative z-20"
+              playsInline
+            />
+          ) : (
+            <div className="w-full relative z-20 p-4">
+              <AudioPlayer url={selectedItem.url} />
+            </div>
+          )}
+          
+          {selectedItem.caption && (
+            <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/90 to-transparent pointer-events-none">
+              <p className="text-sm text-gray-200 text-center pointer-events-auto">{selectedItem.caption}</p>
+            </div>
+          )}
+        </div>
+      </div>
+  ) : (
+      <div className="w-full h-full flex flex-col z-10 relative">
+        <h2 className="text-2xl font-bold mb-6 text-[var(--color-pharma-primary)] border-b border-[var(--color-pharma-glass-border)] pb-4 flex items-center gap-2">
+          <ImageIcon className="w-6 h-6" />
+          {data.title}
+        </h2>
+        
+        <div className="flex-1 overflow-y-auto overscroll-y-contain hide-scrollbar space-y-4">
+          {items.length > 0 ? items.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => setSelectedItem(item)}
+              className="w-full p-4 rounded-2xl border border-[var(--color-pharma-glass-border)] bg-white/5 hover:bg-white/10 transition-all flex items-center gap-4 group"
+            >
+              <div className="p-3 rounded-xl bg-[var(--color-pharma-primary)]/20 text-[var(--color-pharma-primary)] group-hover:scale-110 transition-transform">
+                {getIcon(item.type)}
+              </div>
+              <div className="text-right flex-1">
+                <h3 className="font-bold text-white">{item.title}</h3>
+                <p className="text-sm text-gray-400 mt-1">
+                  {item.type === 'image' ? 'صورة' : item.type === 'video' ? 'فيديو' : item.type === 'audio' ? 'صوت' : 'مخطط'}
+                </p>
+              </div>
+            </button>
+          )) : (
+            <div className="flex-1 flex items-center justify-center relative mt-10">
+              <p className="text-gray-500">لا يوجد وسائط لعرضها</p>
+            </div>
+          )}
+        </div>
+      </div>
+  );
+
+  if (hideWrapper) {
+    return <div className="w-full h-full p-6">{Content}</div>;
+  }
+
+  return (
+    <div className={cn(
+      "glass-panel rounded-3xl p-6 w-full h-full flex flex-col relative",
+      "border-t border-l border-opacity-20 border-white"
+    )}>
+       {Content}
+    </div>
+  );
+}
+
+function AudioPlayer({ url }: { url: string }) {
+  const [blobUrl, setBlobUrl] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+
+  const loadAudio = async () => {
+    setLoading(true);
+    setError(false);
+    try {
+      const response = await fetch(url);
+      if (!response.ok) throw new Error('Fetch failed');
+      const blob = await response.blob();
+      setBlobUrl(URL.createObjectURL(blob));
+    } catch (err) {
+      console.error('Error fetching audio:', err);
+      setError(true);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="w-full p-6 flex flex-col items-center gap-4 bg-black/40 rounded-2xl border border-white/5 backdrop-blur-md">
+      {blobUrl ? (
+        <div className="w-full flex justify-center flex-col items-center gap-4">
+          <audio
+            src={blobUrl}
+            controls
+            autoPlay
+            playsInline
+            className="w-full"
+          />
+        </div>
+      ) : (
+        <div className="text-center space-y-4">
+          <Headphones className="w-12 h-12 mx-auto text-[var(--color-pharma-primary)] opacity-80" />
+          <div>
+            <p className="text-base font-bold text-gray-200">مقطع صوتي</p>
+            <p className="text-sm text-gray-400 mt-2 max-w-[280px] mx-auto text-center leading-relaxed">
+              لضمان عمل الصوت داخل تطبيق تيليجرام، يرجى الضغط على زر التحميل أدناه.
+            </p>
+          </div>
+          
+          <button
+            onClick={loadAudio}
+            disabled={loading}
+            className="mx-auto bg-[var(--color-pharma-primary)] text-black font-bold px-6 py-3 rounded-xl flex items-center justify-center gap-2 hover:opacity-90 transition-opacity min-w-[180px]"
+          >
+            {loading ? (
+              <div className="animate-spin w-5 h-5 border-2 border-black border-t-transparent rounded-full" />
+            ) : (
+              <PlayCircle className="w-5 h-5" />
+            )}
+            {loading ? 'جاري التحميل...' : 'تحميل وتشغيل'}
+          </button>
+          
+          {error && (
+             <p className="text-red-400 text-xs">تعذر التحميل المباشر، يرجى الفتح في المتصفح الخارجي.</p>
+          )}
+        </div>
+      )}
+      
+      <a 
+        href={url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="mt-2 flex items-center gap-2 text-sm text-[var(--color-pharma-primary)] hover:opacity-80 transition-opacity bg-white/5 py-2 px-6 rounded-full border border-[var(--color-pharma-primary)]/30"
+      >
+        <ExternalLink className="w-4 h-4" />
+        فتح في المتصفح الخارجي
+      </a>
+    </div>
+  );
+}

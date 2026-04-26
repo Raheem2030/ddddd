@@ -49,6 +49,7 @@ export function MediaCard({ data, hideWrapper }: MediaCardProps) {
             />
           ) : selectedItem.type === 'video' ? (
             <video 
+              key={selectedItem.url}
               src={selectedItem.url} 
               controls 
               className="w-full h-full object-contain relative z-20"
@@ -57,11 +58,16 @@ export function MediaCard({ data, hideWrapper }: MediaCardProps) {
           ) : (
             <div className="w-full p-4 relative z-20">
               <audio 
-                src={selectedItem.url} 
+                key={selectedItem.url}
                 controls 
                 className="w-full"
-                preload="metadata"
-              />
+                preload="auto"
+                playsInline
+              >
+                <source src={selectedItem.url} type="audio/mpeg" />
+                <source src={selectedItem.url} type="audio/mp3" />
+                متصفحك لا يدعم مشغل الصوت.
+              </audio>
             </div>
           )}
           

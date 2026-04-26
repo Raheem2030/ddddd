@@ -136,7 +136,7 @@ function CustomAudioPlayer({ url }: { url: string }) {
 
     const sound = new Howl({
       src: [url],
-      html5: true, // Force HTML5 Audio to allow streaming, bypassing Web Audio API CORS issues sometimes, but let's see. If we need WebAudio for better Telegram support we can try without it, but HTML5 is better for large files. Actually Telegram WebView WebAudio might be the key. Let's try html5: true first, if it fails maybe WebAudio. Wait, typical telegram webview audio issue is fixed by using Web Audio API (html5: false), allowing audio to be decoded. But CORS might block it. Let's use format: ['mp3'] just in case.
+      html5: false, // Set to false to force Web Audio API instead of HTML audio tag. This solves iOS Telegram WebView restrictions.
       format: ['mp3'],
       onload: () => {
         setDuration(sound.duration());

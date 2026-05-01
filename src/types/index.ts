@@ -98,6 +98,7 @@ export interface Term {
   latin?: string;
   english?: string;
   description?: string;
+  audioUrl?: string;
 }
 
 export interface Compilation {

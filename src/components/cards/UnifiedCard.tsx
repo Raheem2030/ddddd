@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
 import { ContentCard } from '../../types';
-import { AlignRight, Image as ImageIcon, Video, Mic, Edit3, FlaskConical, Link2 } from 'lucide-react';
+import { AlignRight, Image as ImageIcon, Video, Mic, Edit3, FlaskConical, Link2, CopyMinus } from 'lucide-react';
 import { TextCard } from './TextCard';
 import { MediaCard } from './MediaCard';
 import { InteractiveCard } from './InteractiveCard';
 import { SimulatorCard } from './SimulatorCard';
+import { FlashcardsCard } from './FlashcardsCard';
 
 interface UnifiedCardProps {
   data: ContentCard;
 }
 
-type TabType = 'text' | 'image' | 'video' | 'audio' | 'interactive' | 'simulator';
+type TabType = 'text' | 'image' | 'video' | 'audio' | 'interactive' | 'simulator' | 'flashcards';
 
 export function UnifiedCard({ data }: UnifiedCardProps) {
   // Determine available tabs based on provided data
@@ -42,6 +43,10 @@ export function UnifiedCard({ data }: UnifiedCardProps) {
     availableTabs.push({ type: 'simulator', icon: <FlaskConical className="w-5 h-5" />, label: 'مخبر' });
   }
 
+  if (data.terms || data.type === 'flashcards') {
+    availableTabs.push({ type: 'flashcards', icon: <CopyMinus className="w-5 h-5" />, label: 'تجميعات' });
+  }
+
   // Ensure at least one tab exists
   if (availableTabs.length === 0 && data.type) {
      if (data.type === 'media') availableTabs.push({ type: 'image', icon: <ImageIcon className="w-5 h-5" />, label: 'صور' });
@@ -63,7 +68,8 @@ export function UnifiedCard({ data }: UnifiedCardProps) {
       <div className={`absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-4 blur-2xl transition-all duration-500 ${
         activeTab === 'text' ? 'bg-[#00F0FF]/20' : 
         activeTab === 'image' || activeTab === 'video' || activeTab === 'audio' ? 'bg-[#BC13FE]/20' : 
-        activeTab === 'interactive' ? 'bg-[#00FF9D]/20' : 'bg-[#00F0FF]/20'
+        activeTab === 'interactive' ? 'bg-[#00FF9D]/20' : 
+        activeTab === 'flashcards' ? 'bg-[#3B82F6]/20' : 'bg-[#00F0FF]/20'
       }`}></div>
 
       {/* Content Area */}
@@ -74,6 +80,7 @@ export function UnifiedCard({ data }: UnifiedCardProps) {
         {activeTab === 'audio' && <MediaCard data={{...data, items: data.items?.filter(i => i.type === 'audio') || []}} hideWrapper={true} />}
         {activeTab === 'interactive' && <InteractiveCard data={data} hideWrapper={true} />}
         {activeTab === 'simulator' && <SimulatorCard data={data} hideWrapper={true} />}
+        {activeTab === 'flashcards' && <FlashcardsCard data={data} hideWrapper={true} />}
       </div>
 
       {/* Bottom Bar: Tab Navigation */}
@@ -99,6 +106,9 @@ export function UnifiedCard({ data }: UnifiedCardProps) {
             } else if (tab.type === 'interactive') {
               activeColor = "text-[#00FF9D] bg-[#00FF9D]/20";
               shadowColor = "shadow-[0_0_15px_rgba(0,255,157,0.4)]";
+            } else if (tab.type === 'flashcards') {
+              activeColor = "text-[#3B82F6] bg-[#3B82F6]/20";
+              shadowColor = "shadow-[0_0_15px_rgba(59,130,246,0.4)]";
             }
 
             return (

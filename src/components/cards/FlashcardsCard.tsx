@@ -61,12 +61,7 @@ export function FlashcardsCard({ data, hideWrapper }: FlashcardsCardProps) {
                 <button 
                   onClick={(e) => {
                     e.stopPropagation();
-                    if ('speechSynthesis' in window) {
-                      window.speechSynthesis.cancel();
-                      const msg = new SpeechSynthesisUtterance(currentTerm.arabic);
-                      msg.lang = 'ar-SA';
-                      window.speechSynthesis.speak(msg);
-                    } else {
+                    if (currentTerm.audioUrl) {
                       const audio = new Audio(currentTerm.audioUrl);
                       audio.play().catch(err => console.error('Audio playback failed:', err));
                     }
@@ -96,15 +91,7 @@ export function FlashcardsCard({ data, hideWrapper }: FlashcardsCardProps) {
                 <button 
                   onClick={(e) => {
                     e.stopPropagation();
-                    if ('speechSynthesis' in window) {
-                      window.speechSynthesis.cancel();
-                      const textToRead = currentTerm.latin || currentTerm.english || '';
-                      if (textToRead) {
-                        const msg = new SpeechSynthesisUtterance(textToRead);
-                        msg.lang = 'en-US';
-                        window.speechSynthesis.speak(msg);
-                      }
-                    } else {
+                    if (currentTerm.audioUrl) {
                       const audio = new Audio(currentTerm.audioUrl);
                       audio.play().catch(err => console.error('Audio playback failed:', err));
                     }

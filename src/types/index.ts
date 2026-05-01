@@ -90,9 +90,24 @@ export interface Quiz {
   status: 'not_started' | 'in_progress' | 'completed';
 }
 
+export interface Term {
+  arabic: string;
+  latin?: string;
+  english?: string;
+  description?: string;
+}
+
+export interface Compilation {
+  id: string;
+  title: string;
+  description?: string;
+  terms: Term[];
+}
+
 export interface SubjectContent {
   subjectId: string;
   chapters: Chapter[];
   resources?: Resource[];
   quizzes?: Quiz[];
+  compilations?: Compilation[];
 }

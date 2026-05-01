@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
-import { ArrowRight, BookOpen, Layers, CheckCircle, PlayCircle, FileText, BrainCircuit, BotMessageSquare, ArrowLeft, FlaskConical } from 'lucide-react';
+import { ArrowRight, BookOpen, Layers, CheckCircle, PlayCircle, FileText, BrainCircuit, BotMessageSquare, ArrowLeft, FlaskConical, List } from 'lucide-react';
 import { subjects, subjectContents } from '../data';
 import { AiAssistant } from '../components/AiAssistant';
 
@@ -9,7 +9,7 @@ export function SubjectDashboard() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const location = useLocation();
-  const [activeTab, setActiveTab] = useState<'study' | 'resources' | 'quizzes' | 'ai'>('study');
+  const [activeTab, setActiveTab] = useState<'study' | 'compilations' | 'resources' | 'quizzes' | 'ai'>('study');
 
   const subject = subjects.find(s => s.id === id);
   const content = subjectContents[id || ''];
@@ -61,14 +61,14 @@ export function SubjectDashboard() {
             <BookOpen className="w-4 h-4" />
           </button>
           <button
-            onClick={() => setActiveTab('resources')}
+            onClick={() => setActiveTab('compilations')}
             className={`flex-1 py-3 text-sm font-bold rounded-xl transition-all duration-300 flex items-center justify-center gap-2 ${
-              activeTab === 'resources' 
-                ? 'bg-[var(--color-pharma-secondary)] text-white shadow-[0_0_15px_rgba(188,19,254,0.4)]' 
+              activeTab === 'compilations' 
+                ? 'bg-blue-400 text-black shadow-[0_0_15px_rgba(96,165,250,0.4)]' 
                 : 'text-gray-400 hover:text-white'
             }`}
           >
-            <Layers className="w-4 h-4" />
+            <List className="w-4 h-4" />
           </button>
           <button
             onClick={() => setActiveTab('quizzes')}
@@ -79,6 +79,16 @@ export function SubjectDashboard() {
             }`}
           >
             <CheckCircle className="w-4 h-4" />
+          </button>
+          <button
+            onClick={() => setActiveTab('resources')}
+            className={`flex-1 py-3 text-sm font-bold rounded-xl transition-all duration-300 flex items-center justify-center gap-2 ${
+              activeTab === 'resources' 
+                ? 'bg-[var(--color-pharma-secondary)] text-white shadow-[0_0_15px_rgba(188,19,254,0.4)]' 
+                : 'text-gray-400 hover:text-white'
+            }`}
+          >
+            <Layers className="w-4 h-4" />
           </button>
           <button
             onClick={() => setActiveTab('ai')}
@@ -133,6 +143,42 @@ export function SubjectDashboard() {
                   </div>
                 )}
               </div>
+            </motion.div>
+          )}
+
+          {activeTab === 'compilations' && (
+            <motion.div
+              key="compilations"
+              initial={{ x: -20, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: 20, opacity: 0 }}
+              className="space-y-6"
+            >
+              {content?.compilations && content.compilations.length > 0 ? (
+                content.compilations.map((compilation) => (
+                  <div key={compilation.id} className="space-y-4">
+                    <h3 className="text-xl font-bold text-blue-400 mb-4">{compilation.title}</h3>
+                    {compilation.description && <p className="text-gray-400 text-sm mb-4">{compilation.description}</p>}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      {compilation.terms.map((term, idx) => (
+                        <div key={idx} className="glass-panel p-4 rounded-xl border border-white/10 hover:border-blue-500/50 transition-colors">
+                          <h4 className="font-bold text-white text-lg">{term.arabic}</h4>
+                          {(term.latin || term.english) && (
+                            <p className="text-blue-300 font-mono mt-1" dir="ltr">{term.latin || term.english}</p>
+                          )}
+                          {term.description && (
+                            <p className="text-gray-400 text-sm mt-2">{term.description}</p>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="text-center text-gray-500 mt-10">
+                  <p>لا توجد تجميعات متاحة حالياً.</p>
+                </div>
+              )}
             </motion.div>
           )}
 

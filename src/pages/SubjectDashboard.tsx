@@ -5,11 +5,49 @@ import { ArrowRight, BookOpen, Layers, CheckCircle, PlayCircle, FileText, BrainC
 import { subjects, subjectContents } from '../data';
 import { AiAssistant } from '../components/AiAssistant';
 
+const TermFlashcard = ({ term }: { term: any }) => {
+  const [flipped, setFlipped] = useState(false);
+  return (
+    <div 
+      className="relative w-full h-32 cursor-pointer"
+      style={{ perspective: '1000px' }}
+      onClick={() => setFlipped(!flipped)}
+    >
+      <motion.div
+        className="w-full h-full relative transition-transform duration-500"
+        initial={false}
+        animate={{ rotateY: flipped ? 180 : 0 }}
+        style={{ transformStyle: 'preserve-3d' }}
+      >
+        <div 
+          className="absolute inset-0 w-full h-full glass-panel flex flex-col items-center justify-center rounded-xl border border-white/10 hover:border-[var(--color-pharma-accent)]/50 p-4"
+          style={{ backfaceVisibility: 'hidden' }}
+        >
+          <h4 className="font-bold text-white text-lg text-center" dir="rtl">{term.arabic}</h4>
+          <p className="text-gray-500 text-xs mt-2 opacity-50 absolute bottom-2">انقر للقلب</p>
+        </div>
+        
+        <div 
+          className="absolute inset-0 w-full h-full glass-panel flex flex-col items-center justify-center rounded-xl border border-[var(--color-pharma-accent)]/50 bg-[var(--color-pharma-accent)]/10 p-4"
+          style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
+        >
+          {(term.latin || term.english) && (
+            <p className="text-[var(--color-pharma-accent)] font-mono text-center font-bold mb-1" dir="ltr">{term.latin || term.english}</p>
+          )}
+          {term.description && (
+            <p className="text-gray-300 text-xs text-center" dir="rtl">{term.description}</p>
+          )}
+        </div>
+      </motion.div>
+    </div>
+  );
+};
+
 export function SubjectDashboard() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const location = useLocation();
-  const [activeTab, setActiveTab] = useState<'study' | 'compilations' | 'resources' | 'quizzes' | 'ai'>('study');
+  const [activeTab, setActiveTab] = useState<'study' | 'resources' | 'quizzes' | 'ai'>('study');
 
   const subject = subjects.find(s => s.id === id);
   const content = subjectContents[id || ''];
@@ -59,16 +97,6 @@ export function SubjectDashboard() {
             }`}
           >
             <BookOpen className="w-4 h-4" />
-          </button>
-          <button
-            onClick={() => setActiveTab('compilations')}
-            className={`flex-1 py-3 text-sm font-bold rounded-xl transition-all duration-300 flex items-center justify-center gap-2 ${
-              activeTab === 'compilations' 
-                ? 'bg-blue-400 text-black shadow-[0_0_15px_rgba(96,165,250,0.4)]' 
-                : 'text-gray-400 hover:text-white'
-            }`}
-          >
-            <List className="w-4 h-4" />
           </button>
           <button
             onClick={() => setActiveTab('quizzes')}
@@ -146,42 +174,6 @@ export function SubjectDashboard() {
             </motion.div>
           )}
 
-          {activeTab === 'compilations' && (
-            <motion.div
-              key="compilations"
-              initial={{ x: -20, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              exit={{ x: 20, opacity: 0 }}
-              className="space-y-6"
-            >
-              {content?.compilations && content.compilations.length > 0 ? (
-                content.compilations.map((compilation) => (
-                  <div key={compilation.id} className="space-y-4">
-                    <h3 className="text-xl font-bold text-blue-400 mb-4">{compilation.title}</h3>
-                    {compilation.description && <p className="text-gray-400 text-sm mb-4">{compilation.description}</p>}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                      {compilation.terms.map((term, idx) => (
-                        <div key={idx} className="glass-panel p-4 rounded-xl border border-white/10 hover:border-blue-500/50 transition-colors">
-                          <h4 className="font-bold text-white text-lg">{term.arabic}</h4>
-                          {(term.latin || term.english) && (
-                            <p className="text-blue-300 font-mono mt-1" dir="ltr">{term.latin || term.english}</p>
-                          )}
-                          {term.description && (
-                            <p className="text-gray-400 text-sm mt-2">{term.description}</p>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <div className="text-center text-gray-500 mt-10">
-                  <p>لا توجد تجميعات متاحة حالياً.</p>
-                </div>
-              )}
-            </motion.div>
-          )}
-
           {activeTab === 'resources' && (
             <motion.div
               key="resources"
@@ -219,40 +211,68 @@ export function SubjectDashboard() {
               initial={{ x: -20, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: 20, opacity: 0 }}
-              className="space-y-4"
+              className="space-y-8"
             >
-              {content?.quizzes && content.quizzes.length > 0 ? (
-                content.quizzes.map((quiz) => (
-                  <button 
-                    key={quiz.id} 
-                    onClick={() => {
-                      if (quiz.path) {
-                        navigate(quiz.path);
-                      }
-                    }}
-                    className="w-full text-right glass-panel rounded-2xl p-5 border border-white/10 flex items-center justify-between hover:border-[var(--color-pharma-accent)]/50 transition-colors cursor-pointer block"
-                  >
-                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-xl bg-[var(--color-pharma-accent)]/20 flex items-center justify-center text-[var(--color-pharma-accent)] shrink-0">
-                        {quiz.type === 'simulator' ? <FlaskConical className="w-6 h-6" /> : <BrainCircuit className="w-6 h-6" />}
+              {/* Quizzes Section */}
+              <div className="space-y-4">
+                <h3 className="text-lg font-bold text-white mb-2 flex items-center gap-2">
+                  <BrainCircuit className="w-5 h-5 text-[var(--color-pharma-accent)]" />
+                  الاختبارات
+                </h3>
+                {content?.quizzes && content.quizzes.length > 0 ? (
+                  content.quizzes.map((quiz) => (
+                    <button 
+                      key={quiz.id} 
+                      onClick={() => {
+                        if (quiz.path) {
+                          navigate(quiz.path);
+                        }
+                      }}
+                      className="w-full text-right glass-panel rounded-2xl p-5 border border-white/10 flex items-center justify-between hover:border-[var(--color-pharma-accent)]/50 transition-colors cursor-pointer block"
+                    >
+                      <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 rounded-xl bg-[var(--color-pharma-accent)]/20 flex items-center justify-center text-[var(--color-pharma-accent)] shrink-0">
+                          {quiz.type === 'simulator' ? <FlaskConical className="w-6 h-6" /> : <BrainCircuit className="w-6 h-6" />}
+                        </div>
+                        <div>
+                          <h4 className="font-bold text-white">{quiz.title}</h4>
+                          {quiz.type === 'simulator' ? (
+                            <p className="text-xs text-[var(--color-pharma-accent)] mt-1">مخبر افتراضي تفاعلي</p>
+                          ) : (
+                            <p className="text-xs text-gray-400 mt-1">{quiz.questionCount} سؤال • {quiz.durationMinutes} دقيقة</p>
+                          )}
+                        </div>
                       </div>
-                      <div>
-                        <h4 className="font-bold text-white">{quiz.title}</h4>
-                        {quiz.type === 'simulator' ? (
-                          <p className="text-xs text-[var(--color-pharma-accent)] mt-1">مخبر افتراضي تفاعلي</p>
-                        ) : (
-                          <p className="text-xs text-gray-400 mt-1">{quiz.questionCount} سؤال • {quiz.durationMinutes} دقيقة</p>
-                        )}
+                      <div className="px-3 py-1 rounded-full bg-white/10 text-xs font-bold text-gray-300 whitespace-nowrap">
+                        {quiz.status === 'not_started' ? 'لم يبدأ' : quiz.status === 'in_progress' ? 'قيد الإنجاز' : 'مكتمل'}
+                      </div>
+                    </button>
+                  ))
+                ) : (
+                  <div className="text-center text-gray-500 py-4 glass-panel rounded-xl border border-white/5">
+                    <p>لا توجد اختبارات متاحة حالياً.</p>
+                  </div>
+                )}
+              </div>
+
+              {/* Compilations Section as Flashcards */}
+              {content?.compilations && content.compilations.length > 0 && (
+                <div className="space-y-4 pt-4 border-t border-white/10">
+                  <h3 className="text-lg font-bold text-white mb-2 flex items-center gap-2">
+                    <List className="w-5 h-5 text-blue-400" />
+                    تجميعات ومصطلحات (فلاش كارد)
+                  </h3>
+                  {content.compilations.map((compilation) => (
+                    <div key={compilation.id} className="space-y-4 mb-6">
+                      <h4 className="text-[var(--color-pharma-accent)] font-bold">{compilation.title}</h4>
+                      {compilation.description && <p className="text-gray-400 text-sm">{compilation.description}</p>}
+                      <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
+                        {compilation.terms.map((term, idx) => (
+                          <TermFlashcard key={idx} term={term} />
+                        ))}
                       </div>
                     </div>
-                    <div className="px-3 py-1 rounded-full bg-white/10 text-xs font-bold text-gray-300 whitespace-nowrap">
-                      {quiz.status === 'not_started' ? 'لم يبدأ' : quiz.status === 'in_progress' ? 'قيد الإنجاز' : 'مكتمل'}
-                    </div>
-                  </button>
-                ))
-              ) : (
-                <div className="text-center text-gray-500 mt-10">
-                  <p>لا توجد اختبارات متاحة حالياً.</p>
+                  ))}
                 </div>
               )}
             </motion.div>

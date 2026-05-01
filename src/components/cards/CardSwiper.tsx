@@ -5,14 +5,30 @@ import { CheckCircle2 } from 'lucide-react';
 
 interface CardSwiperProps {
   cards: ContentCard[];
+  initialIndex?: number;
   onComplete?: () => void;
 }
 
-export function CardSwiper({ cards, onComplete }: CardSwiperProps) {
+export function CardSwiper({ cards, initialIndex = 0, onComplete }: CardSwiperProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   // We are going to group the flat card array by title.
   // Wait, no, we can keep the mapping exactly as before, but pass 'card' to UnifiedCard
+  
+  useEffect(() => {
+    if (containerRef.current && initialIndex > 0) {
+      // Scroll to the initial card instantly when mounted
+      const container = containerRef.current;
+      const child = container.children[initialIndex] as HTMLElement;
+      if (child) {
+        // Wait a tick for layout
+        setTimeout(() => {
+          child.scrollIntoView({ behavior: 'instant', block: 'nearest', inline: 'center' });
+        }, 10);
+      }
+    }
+  }, [initialIndex]);
+
   return (
     <div className="relative w-full h-full flex items-center justify-center overflow-hidden" dir="rtl">
       <div 

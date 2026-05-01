@@ -1,47 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
-import { ArrowRight, BookOpen, Layers, CheckCircle, PlayCircle, FileText, BrainCircuit, BotMessageSquare, ArrowLeft, FlaskConical, List } from 'lucide-react';
+import { ArrowRight, BookOpen, Layers, CheckCircle, PlayCircle, FileText, BrainCircuit, BotMessageSquare, ArrowLeft, FlaskConical } from 'lucide-react';
 import { subjects, subjectContents } from '../data';
 import { AiAssistant } from '../components/AiAssistant';
-
-const TermFlashcard = ({ term }: { term: any }) => {
-  const [flipped, setFlipped] = useState(false);
-  return (
-    <div 
-      className="relative w-full h-32 cursor-pointer"
-      style={{ perspective: '1000px' }}
-      onClick={() => setFlipped(!flipped)}
-    >
-      <motion.div
-        className="w-full h-full relative transition-transform duration-500"
-        initial={false}
-        animate={{ rotateY: flipped ? 180 : 0 }}
-        style={{ transformStyle: 'preserve-3d' }}
-      >
-        <div 
-          className="absolute inset-0 w-full h-full glass-panel flex flex-col items-center justify-center rounded-xl border border-white/10 hover:border-[var(--color-pharma-accent)]/50 p-4"
-          style={{ backfaceVisibility: 'hidden' }}
-        >
-          <h4 className="font-bold text-white text-lg text-center" dir="rtl">{term.arabic}</h4>
-          <p className="text-gray-500 text-xs mt-2 opacity-50 absolute bottom-2">انقر للقلب</p>
-        </div>
-        
-        <div 
-          className="absolute inset-0 w-full h-full glass-panel flex flex-col items-center justify-center rounded-xl border border-[var(--color-pharma-accent)]/50 bg-[var(--color-pharma-accent)]/10 p-4"
-          style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
-        >
-          {(term.latin || term.english) && (
-            <p className="text-[var(--color-pharma-accent)] font-mono text-center font-bold mb-1" dir="ltr">{term.latin || term.english}</p>
-          )}
-          {term.description && (
-            <p className="text-gray-300 text-xs text-center" dir="rtl">{term.description}</p>
-          )}
-        </div>
-      </motion.div>
-    </div>
-  );
-};
 
 export function SubjectDashboard() {
   const { id } = useParams<{ id: string }>();
@@ -254,27 +216,6 @@ export function SubjectDashboard() {
                   </div>
                 )}
               </div>
-
-              {/* Compilations Section as Flashcards */}
-              {content?.compilations && content.compilations.length > 0 && (
-                <div className="space-y-4 pt-4 border-t border-white/10">
-                  <h3 className="text-lg font-bold text-white mb-2 flex items-center gap-2">
-                    <List className="w-5 h-5 text-blue-400" />
-                    تجميعات ومصطلحات (فلاش كارد)
-                  </h3>
-                  {content.compilations.map((compilation) => (
-                    <div key={compilation.id} className="space-y-4 mb-6">
-                      <h4 className="text-[var(--color-pharma-accent)] font-bold">{compilation.title}</h4>
-                      {compilation.description && <p className="text-gray-400 text-sm">{compilation.description}</p>}
-                      <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
-                        {compilation.terms.map((term, idx) => (
-                          <TermFlashcard key={idx} term={term} />
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
             </motion.div>
           )}
 

@@ -4,6 +4,7 @@ import { cn } from '../../lib/utils';
 import { FlaskConical, Atom, Pill, List, Flame, Hourglass, Image as ImageIcon, CheckCircle } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkMath from 'remark-math';
+import remarkGfm from 'remark-gfm';
 import rehypeKatex from 'rehype-katex';
 
 interface TextCardProps {
@@ -32,17 +33,13 @@ export function TextCard({ data, hideWrapper }: TextCardProps) {
       
       <div className="flex-1 overflow-y-auto overscroll-y-contain hide-scrollbar pr-2 z-10 relative">
         {data.content && (
-          <div className="space-y-4 text-gray-200 text-lg leading-relaxed mb-6">
-            {data.content.map((paragraph, index) => (
-              <div key={index} className="flex items-start gap-3">
-                <FlaskConical className="w-5 h-5 mt-1 text-[#00F0FF] shrink-0" />
-                <div className="flex-1 markdown-body" dir="rtl">
-                  <ReactMarkdown remarkPlugins={[remarkMath]} rehypePlugins={[rehypeKatex]}>
-                    {paragraph}
-                  </ReactMarkdown>
-                </div>
-              </div>
-            ))}
+          <div className="text-gray-200 text-lg leading-relaxed mb-6 markdown-body" dir="rtl">
+            <ReactMarkdown 
+              remarkPlugins={[remarkMath, remarkGfm]} 
+              rehypePlugins={[rehypeKatex]}
+            >
+              {data.content.join('\n').replace(/• /g, '- ').replace(/•/g, '- ')}
+            </ReactMarkdown>
           </div>
         )}
 
@@ -74,14 +71,14 @@ export function TextCard({ data, hideWrapper }: TextCardProps) {
                       {getIcon(panel.icon, textColor)}
                     </div>
                     <div className={cn("font-bold text-lg flex-1 min-w-0 break-words", textColor, glowText)}>
-                      <ReactMarkdown remarkPlugins={[remarkMath]} rehypePlugins={[rehypeKatex]} components={{ p: React.Fragment }}>
+                      <ReactMarkdown remarkPlugins={[remarkMath, remarkGfm]} rehypePlugins={[rehypeKatex]} components={{ p: React.Fragment }}>
                         {panel.title}
                       </ReactMarkdown>
                     </div>
                   </div>
                   <div className="text-white/90 text-sm leading-relaxed z-10 mt-1 markdown-body break-words" dir="rtl">
-                    <ReactMarkdown remarkPlugins={[remarkMath]} rehypePlugins={[rehypeKatex]}>
-                      {panel.content}
+                    <ReactMarkdown remarkPlugins={[remarkMath, remarkGfm]} rehypePlugins={[rehypeKatex]}>
+                      {panel.content.replace(/• /g, '- ').replace(/•/g, '- ')}
                     </ReactMarkdown>
                   </div>
                 </div>

@@ -5,7 +5,7 @@ export const pharmacognosy_1: SubjectContent = {
   chapters: [
     {
       id: 'ch-prac-1',
-      title: 'الجلسة العملية الأولى: المجهر الضوئي العادي',
+      title: 'القسم الأول: المجهر الضوئي العادي',
       description: 'مقدمة في فحص العقاقير وتعريف المجهر وأقسامه واستخدامه والمحافظة عليه والمجاهر الإلكترونية.',
       capsules: [
         {
@@ -190,7 +190,7 @@ export const pharmacognosy_1: SubjectContent = {
     },
     {
       id: 'ch-prac-0',
-      title: 'الجلسة العملية الثانية: الميزات الشكلية والنسيجية وتطورها',
+      title: 'القسم الثاني: الميزات الشكلية والنسيجية وتطورها',
       description: 'مقدمة في النسج النباتية والنسج الميرستيمية وتطبيقاتها.',
       capsules: [
         {
@@ -321,7 +321,7 @@ export const pharmacognosy_1: SubjectContent = {
     },
     {
       id: 'ch-prac-3',
-      title: 'الجلسة العملية الثالثة: النسج الواقية والبشرة (Protective Tissues & Epidermis)',
+      title: 'القسم الثالث: النسج الواقية والبشرة (Protective Tissues & Epidermis)',
       description: 'النسج الواقية والبشرة الأولية، الأوبار، الثغور، والبشرة الثانوية.',
       capsules: [
         {
@@ -591,7 +591,7 @@ export const pharmacognosy_1: SubjectContent = {
     },
     {
       id: 'ch-prac-4',
-      title: 'الجلسة العملية الرابعة: النسج النباتية والتطبيقات العملية',
+      title: 'القسم الرابع: النسج النباتية والتطبيقات العملية',
       description: 'النسج البرانشيمية، النسيج الكولنشيمي، والتطبيقات العملية كدراسة صانعات النشاء، بلورات الإنولين وغيرها.',
       capsules: [
         {
@@ -856,7 +856,7 @@ export const pharmacognosy_1: SubjectContent = {
     },
     {
       id: 'ch-prac-6',
-      title: 'الجلسة العملية السادسة: النسج الناقلة والمفرزة',
+      title: 'القسم السادس: النسج الناقلة والمفرزة',
       description: 'النسج الناقلة أو الوعائية، النسيج الخشبي، النسيج اللحائي والتطبيقات العملية.',
       capsules: [
         {

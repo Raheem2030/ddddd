@@ -1,8 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { ContentCard, MediaItem } from '../../types';
 import { cn } from '../../lib/utils';
-import { Image as ImageIcon, PlayCircle, BarChart2, Headphones, ArrowLeft, Play, Pause, AlertCircle } from 'lucide-react';
-import { Howl, Howler } from 'howler';
+import { Image as ImageIcon, PlayCircle, BarChart2, Headphones, ArrowLeft } from 'lucide-react';
 
 interface MediaCardProps {
   data: ContentCard;
@@ -57,7 +56,12 @@ export function MediaCard({ data, hideWrapper }: MediaCardProps) {
               playsInline
             />
           ) : (
-            <CustomAudioPlayer url={selectedItem.url} />
+             <audio 
+              key={selectedItem.url}
+              src={selectedItem.url} 
+              controls 
+              className="w-full max-w-sm relative z-20"
+            />
           )}
           
           {selectedItem.caption && (
@@ -110,149 +114,6 @@ export function MediaCard({ data, hideWrapper }: MediaCardProps) {
       "border-t border-l border-opacity-20 border-white"
     )}>
        {Content}
-    </div>
-  );
-}
-
-function CustomAudioPlayer({ url }: { url: string }) {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const [duration, setDuration] = useState(0);
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
-  const howlRef = useRef<Howl | null>(null);
-  const rafRef = useRef<number | null>(null);
-
-  useEffect(() => {
-    Howler.autoUnlock = true;
-    
-    setIsPlaying(false);
-    setProgress(0);
-    setDuration(0);
-    setErrorMsg(null);
-    
-    if (howlRef.current) {
-      howlRef.current.unload();
-    }
-
-    const sound = new Howl({
-      src: [url],
-      html5: false, // Set to false to force Web Audio API instead of HTML audio tag. This solves iOS Telegram WebView restrictions.
-      format: ['mp3'],
-      onload: () => {
-        setDuration(sound.duration());
-      },
-      onplay: () => {
-        setIsPlaying(true);
-        const updatePosition = () => {
-          if (sound.playing()) {
-            setProgress(sound.seek() as number);
-            rafRef.current = requestAnimationFrame(updatePosition);
-          }
-        };
-        rafRef.current = requestAnimationFrame(updatePosition);
-      },
-      onpause: () => {
-        setIsPlaying(false);
-        if (rafRef.current) cancelAnimationFrame(rafRef.current);
-      },
-      onstop: () => {
-        setIsPlaying(false);
-        setProgress(0);
-        if (rafRef.current) cancelAnimationFrame(rafRef.current);
-      },
-      onend: () => {
-        setIsPlaying(false);
-        setProgress(0);
-        if (rafRef.current) cancelAnimationFrame(rafRef.current);
-      },
-      onloaderror: (id, err) => {
-        setErrorMsg(`خطأ في التحميل: ${err}`);
-      },
-      onplayerror: (id, err) => {
-        sound.once('unlock', () => {
-          sound.play();
-        });
-        setErrorMsg(`خطأ في التشغيل: ${err} (في انتظار تفاعل المستخدم)`);
-      }
-    });
-
-    howlRef.current = sound;
-
-    return () => {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
-      if (howlRef.current) howlRef.current.unload();
-    };
-  }, [url]);
-
-  const togglePlay = () => {
-    if (!howlRef.current) return;
-    
-    if (howlRef.current.playing()) {
-      howlRef.current.pause();
-    } else {
-      howlRef.current.play();
-    }
-  };
-
-  const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const time = Number(e.target.value);
-    if (howlRef.current) {
-      howlRef.current.seek(time);
-      setProgress(time);
-    }
-  };
-
-  const formatTime = (time: number) => {
-    if (isNaN(time) || !isFinite(time)) return "00:00";
-    const mins = Math.floor(time / 60);
-    const secs = Math.floor(time % 60);
-    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-  };
-
-  return (
-    <div className="w-full max-w-md p-6 relative z-20 flex flex-col items-center gap-6">
-      {errorMsg && (
-        <div className="w-full p-3 mb-2 text-sm text-red-100 bg-red-900/80 border border-red-500 rounded-lg text-center flex items-center gap-2 justify-center" dir="rtl">
-          <AlertCircle className="w-4 h-4" />
-          {errorMsg}
-        </div>
-      )}
-      
-      <div className="w-20 h-20 rounded-full bg-[var(--color-pharma-primary)]/10 flex items-center justify-center border border-[var(--color-pharma-primary)]/30">
-        <Headphones className="w-10 h-10 text-[var(--color-pharma-primary)]" />
-      </div>
-      
-      <div className="w-full space-y-4">
-        <div className="flex items-center gap-4 dir-ltr" dir="ltr">
-          <span className="text-xs text-gray-400 font-mono w-10 text-right">
-            {formatTime(progress)}
-          </span>
-          <input
-            type="range"
-            min="0"
-            max={duration || 100}
-            value={progress}
-            onChange={handleSeek}
-            className="flex-1 h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-[var(--color-pharma-primary)]"
-          />
-          <span className="text-xs text-gray-400 font-mono w-10">
-            {formatTime(duration)}
-          </span>
-        </div>
-
-        <div className="flex justify-center mt-2">
-          <button
-            onClick={togglePlay}
-            className="w-14 h-14 flex items-center justify-center rounded-full bg-[var(--color-pharma-primary)] text-black hover:scale-105 transition-transform"
-          >
-            {isPlaying ? (
-              <Pause className="w-6 h-6 fill-black" />
-            ) : (
-              <Play className="w-6 h-6 fill-black ml-1" />
-            )}
-          </button>
-        </div>
-      </div>
     </div>
   );
 }

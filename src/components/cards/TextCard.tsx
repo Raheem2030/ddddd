@@ -38,7 +38,9 @@ export function TextCard({ data, hideWrapper }: TextCardProps) {
                 remarkPlugins={[remarkMath, remarkGfm]} 
                 rehypePlugins={[rehypeKatex]}
                 components={{ 
-                  table: ({node, ...props}) => <div className="w-full overflow-x-auto mb-4 border border-[#00F0FF]/15 rounded-lg"><table {...props} className="m-0" /></div> 
+                  table: ({node, ...props}) => <div className="w-full overflow-x-auto mb-4 border border-[#00F0FF]/15 rounded-lg"><table {...props} className="m-0 min-w-full" /></div>,
+                  th: ({node, ...props}) => <th {...props}><div className="min-w-[150px]">{props.children}</div></th>,
+                  td: ({node, ...props}) => <td {...props}><div className="min-w-[150px]">{props.children}</div></td>
                 }}
               >
               {data.content.join('\n').replace(/• /g, '- ').replace(/•/g, '- ')}
@@ -84,7 +86,9 @@ export function TextCard({ data, hideWrapper }: TextCardProps) {
                       remarkPlugins={[remarkMath, remarkGfm]} 
                       rehypePlugins={[rehypeKatex]}
                       components={{ 
-                        table: ({node, ...props}) => <div className="w-full overflow-x-auto mb-4 border border-[#00F0FF]/15 rounded-lg"><table {...props} className="m-0" /></div> 
+                        table: ({node, ...props}) => <div className="w-full overflow-x-auto mb-4 border border-[#00F0FF]/15 rounded-lg"><table {...props} className="m-0 min-w-full" /></div>,
+                        th: ({node, ...props}) => <th {...props}><div className="min-w-[150px]">{props.children}</div></th>,
+                        td: ({node, ...props}) => <td {...props}><div className="min-w-[150px]">{props.children}</div></td>
                       }}
                     >
                       {panel.content.replace(/• /g, '- ').replace(/•/g, '- ')}

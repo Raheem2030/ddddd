@@ -34,10 +34,13 @@ export function TextCard({ data, hideWrapper }: TextCardProps) {
       <div className="flex-1 overflow-y-auto overscroll-y-contain hide-scrollbar pr-2 z-10 relative">
         {data.content && (
           <div className="text-gray-200 text-lg leading-relaxed mb-6 markdown-body" dir="rtl">
-            <ReactMarkdown 
-              remarkPlugins={[remarkMath, remarkGfm]} 
-              rehypePlugins={[rehypeKatex]}
-            >
+              <ReactMarkdown 
+                remarkPlugins={[remarkMath, remarkGfm]} 
+                rehypePlugins={[rehypeKatex]}
+                components={{ 
+                  table: ({node, ...props}) => <div className="w-full overflow-x-auto mb-4 border border-[#00F0FF]/15 rounded-lg"><table {...props} className="m-0" /></div> 
+                }}
+              >
               {data.content.join('\n').replace(/• /g, '- ').replace(/•/g, '- ')}
             </ReactMarkdown>
           </div>
@@ -77,7 +80,13 @@ export function TextCard({ data, hideWrapper }: TextCardProps) {
                     </div>
                   </div>
                   <div className="text-white/90 text-sm leading-relaxed z-10 mt-1 markdown-body break-words" dir="rtl">
-                    <ReactMarkdown remarkPlugins={[remarkMath, remarkGfm]} rehypePlugins={[rehypeKatex]}>
+                    <ReactMarkdown 
+                      remarkPlugins={[remarkMath, remarkGfm]} 
+                      rehypePlugins={[rehypeKatex]}
+                      components={{ 
+                        table: ({node, ...props}) => <div className="w-full overflow-x-auto mb-4 border border-[#00F0FF]/15 rounded-lg"><table {...props} className="m-0" /></div> 
+                      }}
+                    >
                       {panel.content.replace(/• /g, '- ').replace(/•/g, '- ')}
                     </ReactMarkdown>
                   </div>

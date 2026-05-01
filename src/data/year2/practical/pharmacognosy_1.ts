@@ -285,8 +285,8 @@ export const pharmacognosy_1: SubjectContent = {
                 { arabic: 'القشرة الثانوية', latin: 'Phello Derma' },
                 { arabic: 'الميرستيم البيني', latin: 'Intercalary meristem' },
                 { arabic: 'ميرستيم الإصابات أو الجروح', latin: 'Traumatic Meristems' },
-                { arabic: 'الكوسا', latin: 'Cucurbita pepo' },
-                { arabic: 'الفصيلة القرعية', latin: 'Cucurbitaceae' }
+                { arabic: 'الكوسا', latin: 'Cucurbita pepo', audioUrl: '/kosa.mp3' },
+                { arabic: 'الفصيلة القرعية', latin: 'Cucurbitaceae', audioUrl: '/qareya.mp3' }
               ]
             }
           ]

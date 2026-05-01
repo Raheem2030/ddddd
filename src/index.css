@@ -1,108 +1,116 @@
-import React from 'react';
-import { ContentCard } from '../../types';
-import { cn } from '../../lib/utils';
-import { FlaskConical, Atom, Pill, List, Flame, Hourglass, Image as ImageIcon, CheckCircle } from 'lucide-react';
-import ReactMarkdown from 'react-markdown';
-import remarkMath from 'remark-math';
-import remarkGfm from 'remark-gfm';
-import rehypeKatex from 'rehype-katex';
+@import "tailwindcss";
 
-interface TextCardProps {
-  data: ContentCard;
-  hideWrapper?: boolean;
+@theme {
+  --color-pharma-bg: #0A0E17;
+  --color-pharma-primary: #00F0FF;
+  --color-pharma-secondary: #BC13FE;
+  --color-pharma-accent: #00FF9D;
+  --color-pharma-glass: rgba(10, 14, 23, 0.6);
+  --color-pharma-glass-border: rgba(0, 240, 255, 0.2);
 }
 
-export function TextCard({ data, hideWrapper }: TextCardProps) {
-  const getIcon = (iconName: string, colorClass: string) => {
-    const props = { className: cn("w-6 h-6", colorClass) };
-    switch (iconName) {
-      case 'atom': return <Atom {...props} />;
-      case 'capsule': return <Pill {...props} />;
-      case 'list': return <List {...props} />;
-      case 'flame': return <Flame {...props} />;
-      case 'hourglass': return <Hourglass {...props} />;
-      default: return <FlaskConical {...props} />;
-    }
-  };
+body {
+  background-color: var(--color-pharma-bg);
+  color: white;
+  /* Hexagonal pattern */
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='103.92304845413264' viewBox='0 0 60 103.92304845413264' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 103.92304845413264l-30-17.32050807568877v-34.64101615137754l30-17.32050807568877 30 17.32050807568877v34.64101615137754z' fill-opacity='0.02' fill='%2300F0FF' stroke='%2300F0FF' stroke-width='1' stroke-opacity='0.05'/%3E%3C/svg%3E");
+  background-size: 60px 103.92px;
+}
 
-  const Content = (
-    <>
-      <h2 className="text-2xl font-bold mb-6 text-[#00F0FF] drop-shadow-[0_0_8px_rgba(0,240,255,0.6)] border-b border-[#00F0FF]/20 pb-4 text-center px-12 z-10 relative">
-        {data.title}
-      </h2>
-      
-      <div className="flex-1 overflow-y-auto overscroll-y-contain hide-scrollbar pr-2 z-10 relative">
-        {data.content && (
-          <div className="text-gray-200 text-lg leading-relaxed mb-6 markdown-body" dir="rtl">
-            <ReactMarkdown 
-              remarkPlugins={[remarkMath, remarkGfm]} 
-              rehypePlugins={[rehypeKatex]}
-            >
-              {data.content.join('\n\n').replace(/•/g, '-')}
-            </ReactMarkdown>
-          </div>
-        )}
+.glass-panel {
+  background: var(--color-pharma-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--color-pharma-glass-border);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
 
-        {data.subPanels && (
-          <div className={cn(
-            "grid gap-4 pb-4",
-            data.subPanels.length === 1 ? "grid-cols-1" : "grid-cols-1 sm:grid-cols-2"
-          )}>
-            {data.subPanels.map((panel, index) => {
-              const isBlue = panel.color === 'blue';
-              const borderColor = isBlue ? 'border-[#00F0FF]/40' : 'border-[#BC13FE]/40';
-              const shadowColor = isBlue ? 'shadow-[inset_0_0_15px_rgba(0,240,255,0.15)]' : 'shadow-[inset_0_0_15px_rgba(188,19,254,0.15)]';
-              const textColor = isBlue ? 'text-[#00F0FF]' : 'text-[#BC13FE]';
-              const glowText = isBlue ? 'drop-shadow-[0_0_5px_rgba(0,240,255,0.5)]' : 'drop-shadow-[0_0_5px_rgba(188,19,254,0.5)]';
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
 
-              return (
-                <div key={index} className={cn(
-                  "rounded-2xl p-4 border bg-white/5 backdrop-blur-md flex flex-col gap-2 relative overflow-hidden",
-                  borderColor, shadowColor
-                )}>
-                  {/* Subtle background glow for sub-panel */}
-                  <div className={cn(
-                    "absolute -right-4 -top-4 w-16 h-16 rounded-full blur-xl opacity-20",
-                    isBlue ? "bg-[#00F0FF]" : "bg-[#BC13FE]"
-                  )}></div>
-
-                  <div className="flex items-center gap-3 z-10">
-                    <div className={cn("p-2 rounded-xl bg-black/30 border shrink-0", borderColor)}>
-                      {getIcon(panel.icon, textColor)}
-                    </div>
-                    <div className={cn("font-bold text-lg flex-1 min-w-0 break-words", textColor, glowText)}>
-                      <ReactMarkdown remarkPlugins={[remarkMath, remarkGfm]} rehypePlugins={[rehypeKatex]} components={{ p: React.Fragment }}>
-                        {panel.title}
-                      </ReactMarkdown>
-                    </div>
-                  </div>
-                  <div className="text-white/90 text-sm leading-relaxed z-10 mt-1 markdown-body break-words" dir="rtl">
-                    <ReactMarkdown remarkPlugins={[remarkMath, remarkGfm]} rehypePlugins={[rehypeKatex]}>
-                      {panel.content.replace(/•/g, '-')}
-                    </ReactMarkdown>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        )}
-      </div>
-    </>
-  );
-
-  if (hideWrapper) {
-    return <div className="w-full h-full flex flex-col p-6">{Content}</div>;
-  }
-
-  return (
-    <div className={cn(
-      "glass-panel rounded-3xl p-6 w-full h-full flex flex-col relative overflow-hidden",
-      "border border-[#00F0FF]/30 shadow-[0_0_30px_rgba(0,240,255,0.1)] bg-[#0a0f1a]/60 backdrop-blur-2xl"
-    )}>
-      {/* Inner glow for the main card */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-4 bg-[#00F0FF]/20 blur-2xl"></div>
-
-      {Content}
-    </div>
-  );
+.markdown-body {
+  color: rgba(255, 255, 255, 0.9);
+}
+.markdown-body p {
+  margin-bottom: 0.75rem;
+}
+.markdown-body strong {
+  color: #00F0FF;
+  font-weight: 700;
+}
+.markdown-body em {
+  color: #BC13FE;
+  font-style: italic;
+}
+.markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4 {
+  color: #00F0FF;
+  font-weight: bold;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+.markdown-body ul {
+  list-style-type: disc;
+  padding-right: 1.5rem; /* RTL padding */
+  margin-bottom: 1rem;
+}
+.markdown-body ol {
+  list-style-type: decimal;
+  padding-right: 1.5rem; /* RTL padding */
+  margin-bottom: 1rem;
+}
+.markdown-body li {
+  margin-bottom: 0.25rem;
+}
+.markdown-body li::marker {
+  color: #BC13FE;
+}
+.markdown-body table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: rgba(255, 255, 255, 0.02);
+}
+.markdown-body th, .markdown-body td {
+  border: 1px solid rgba(0, 240, 255, 0.15);
+  padding: 0.75rem;
+  text-align: right;
+  min-width: 150px;
+}
+.markdown-body th {
+  background-color: rgba(0, 240, 255, 0.1);
+  color: #00F0FF;
+  font-weight: bold;
+}
+.markdown-body tr:nth-child(even) {
+  background-color: rgba(255, 255, 255, 0.03);
+}
+.markdown-body blockquote {
+  border-right: 4px solid #BC13FE;
+  padding-right: 1rem;
+  margin-left: 0;
+  margin-right: 0;
+  color: rgba(255, 255, 255, 0.7);
+  background-color: rgba(188, 19, 254, 0.05);
+  font-style: italic;
+}
+.markdown-body .katex-display {
+  margin: 1rem 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  text-align: center;
+}
+.markdown-body .katex {
+  font-size: 1.125rem;
+  direction: ltr;
+  display: inline-block;
+  unicode-bidi: isolate;
+}
+.markdown-body code {
+  direction: ltr;
+  display: inline-block;
+  unicode-bidi: isolate;
 }

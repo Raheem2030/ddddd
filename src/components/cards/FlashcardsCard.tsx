@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ContentCard } from '../../types';
+import { Volume2 } from 'lucide-react';
 
 interface FlashcardsCardProps {
   data: ContentCard;
@@ -55,6 +56,28 @@ export function FlashcardsCard({ data, hideWrapper }: FlashcardsCardProps) {
             style={{ backfaceVisibility: 'hidden' }}
           >
             <h3 className="font-bold text-white text-3xl md:text-5xl text-center" dir="rtl">{currentTerm.arabic}</h3>
+            {currentTerm.audioUrl && (
+              <div className="mt-6 flex flex-col items-center gap-2">
+                <button 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if ('speechSynthesis' in window) {
+                      window.speechSynthesis.cancel();
+                      const msg = new SpeechSynthesisUtterance(currentTerm.arabic);
+                      msg.lang = 'ar-SA';
+                      window.speechSynthesis.speak(msg);
+                    } else {
+                      const audio = new Audio(currentTerm.audioUrl);
+                      audio.play().catch(err => console.error('Audio playback failed:', err));
+                    }
+                  }}
+                  className="bg-blue-500/20 hover:bg-blue-500/40 border border-blue-500/40 text-[#00F0FF] rounded-full p-4 flex items-center justify-center transition-all shadow-[0_0_15px_rgba(0,240,255,0.2)]"
+                  title="استمع للفظ"
+                >
+                  <Volume2 className="w-6 h-6" />
+                </button>
+              </div>
+            )}
             <p className="text-gray-400 mt-6 absolute bottom-6 text-sm">انقر للقلب</p>
           </div>
           
@@ -67,6 +90,32 @@ export function FlashcardsCard({ data, hideWrapper }: FlashcardsCardProps) {
             )}
             {currentTerm.description && (
               <p className="text-gray-200 text-lg text-center" dir="rtl">{currentTerm.description}</p>
+            )}
+            {currentTerm.audioUrl && (
+              <div className="mt-8 flex flex-col items-center gap-2">
+                <button 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if ('speechSynthesis' in window) {
+                      window.speechSynthesis.cancel();
+                      const textToRead = currentTerm.latin || currentTerm.english || '';
+                      if (textToRead) {
+                        const msg = new SpeechSynthesisUtterance(textToRead);
+                        msg.lang = 'en-US';
+                        window.speechSynthesis.speak(msg);
+                      }
+                    } else {
+                      const audio = new Audio(currentTerm.audioUrl);
+                      audio.play().catch(err => console.error('Audio playback failed:', err));
+                    }
+                  }}
+                  className="bg-blue-400/20 hover:bg-blue-400/40 border border-blue-400/40 text-[#00F0FF] rounded-full p-4 flex items-center justify-center transition-all shadow-[0_0_15px_rgba(0,240,255,0.2)]"
+                  title="استمع للفظ"
+                >
+                  <Volume2 className="w-6 h-6" />
+                </button>
+                <p className="text-xs text-blue-300/70 mt-1">استمع للفظ</p>
+              </div>
             )}
           </div>
         </motion.div>

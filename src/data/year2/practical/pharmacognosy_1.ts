@@ -254,20 +254,6 @@ export const pharmacognosy_1: SubjectContent = {
               ]
             },
             {
-              id: 'c0-2-4',
-              type: 'media',
-              title: 'مقطع طولي في مخروط النمو',
-              items: [
-                {
-                  id: 'm1',
-                  type: 'image',
-                  title: 'نبات الإلوديا',
-                  url: 'blob:https://imgur.com/70296cdf-29bd-41d4-b74d-c207d114c5c9',
-                  caption: 'مقطع طولي في مخروط النمو لنبات الإلوديا'
-                }
-              ]
-            },
-            {
               id: 'c0-2-5',
               type: 'flashcards',
               title: 'المصطلحات اللاتينية',
@@ -327,27 +313,6 @@ export const pharmacognosy_1: SubjectContent = {
               content: [
                 '• يلاحظ أن ساق القرع خماسي الأضلاع.',
                 '• يتألف كل ضلع في الساق من منطقة منتفخة بشكل عرف، ومنطقة منخفضة بشكل أخدود قليل العمق.'
-              ]
-            },
-            {
-              id: 'c0-3-4',
-              type: 'media',
-              title: 'مقاطع في ساق الكوسا',
-              items: [
-                {
-                  id: 'm2',
-                  type: 'image',
-                  title: 'المقطع العرضي',
-                  url: 'blob:https://imgur.com/87379e7d-24b9-4d01-8984-fea60d5bc4bf',
-                  caption: 'الشكل الإجمالي للمقطع العرضي في ساق الكوسا'
-                },
-                {
-                  id: 'm3',
-                  type: 'image',
-                  title: 'الحزم الناقلة',
-                  url: 'blob:https://imgur.com/328a8d6d-4aa4-4717-a5c2-f401adebb0cf',
-                  caption: 'الحزم الناقلة في قطاع عرضي في ساق الكوسا'
-                }
               ]
             }
           ]

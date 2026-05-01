@@ -18,7 +18,7 @@ export interface Subject {
   type: string; // e.g., 'نظري', 'عملي', 'نظري + عملي'
 }
 
-export type CardType = 'text' | 'media' | 'interactive' | 'simulator';
+export type CardType = 'text' | 'media' | 'interactive' | 'simulator' | 'flashcards';
 
 export interface TextSubPanel {
   title: string;
@@ -38,7 +38,7 @@ export interface MediaItem {
 export interface ContentCard {
   id: string;
   title: string;
-  type?: 'text' | 'media' | 'interactive' | 'simulator'; // kept for backwards compatibility parsing
+  type?: 'text' | 'media' | 'interactive' | 'simulator' | 'flashcards';
   
   // Text content
   content?: string[];
@@ -55,6 +55,9 @@ export interface ContentCard {
 
   // Simulator content
   simulatorId?: string;
+
+  // Flashcards content
+  terms?: Term[];
 }
 
 export interface Capsule {

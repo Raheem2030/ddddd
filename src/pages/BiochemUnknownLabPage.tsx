@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowRight, FlaskConical, CheckCircle2, XCircle, RotateCcw, Droplets } from 'lucide-react';
 
-type UnknownCompound = 'Albumin' | 'Casein' | 'Gelatin' | 'Tyr' | 'Trp' | 'Phe' | 'Arg' | 'Cys_Met' | 'Gly_Ala';
+type UnknownCompound = 'Albumin' | 'Casein' | 'Gelatin' | 'Tyr' | 'Trp' | 'Phe' | 'Arg' | 'Cys' | 'Gly';
 
 const UNKNOWNS: Record<UnknownCompound, { name: string; type: string }> = {
   Albumin: { name: 'ألبومين (Albumin)', type: 'بروتين' },
@@ -13,8 +13,8 @@ const UNKNOWNS: Record<UnknownCompound, { name: string; type: string }> = {
   Trp: { name: 'تريبتوفان (Trp)', type: 'حمض أميني عطري' },
   Phe: { name: 'فينيل ألانين (Phe)', type: 'حمض أميني عطري' },
   Arg: { name: 'أرجنين (Arg)', type: 'حمض أميني غوانيدي' },
-  Cys_Met: { name: 'سيستيئين / ميثيونين', type: 'حمض أميني كبريتي' },
-  Gly_Ala: { name: 'غلايسين / ألانين', type: 'حمض أميني لا قطبي' },
+  Cys: { name: 'سيستيئين (Cys)', type: 'حمض أميني كبريتي' },
+  Gly: { name: 'غلايسين (Gly)', type: 'حمض أميني لا قطبي' },
 };
 
 const TESTS = [
@@ -82,17 +82,17 @@ export function BiochemUnknownLabPage() {
         break;
         
       case 'folin':
-        if (['Albumin', 'Cys_Met'].includes(currentUnknown)) { color = 'bg-stone-900'; text = 'بني مسود أو أسود (+)'; }
+        if (['Albumin', 'Cys'].includes(currentUnknown)) { color = 'bg-stone-900'; text = 'راسب أسود (+)'; }
         else { color = 'bg-white/20'; text = 'سلبي (-)'; }
         break;
         
       case 'sakaguchi':
-        if (currentUnknown === 'Arg') { color = 'bg-red-800'; text = 'أحمر دموي (+)'; }
+        if (currentUnknown === 'Arg') { color = 'bg-red-800'; text = 'أحمر غامق (+)'; }
         else { color = 'bg-white/20'; text = 'سلبي (-)'; }
         break;
         
       case 'millon':
-        if (currentUnknown === 'Tyr') { color = 'bg-red-600'; text = 'أحمر قرميدي (+)'; }
+        if (currentUnknown === 'Tyr') { color = 'bg-red-600'; text = 'أحمر (+)'; }
         else { color = 'bg-white/20'; text = 'سلبي (-)'; }
         break;
         
@@ -122,11 +122,7 @@ export function BiochemUnknownLabPage() {
   const handleGuess = (compKey: UnknownCompound) => {
     if (guessState === 'correct') return;
     
-    const aromatics = ['Tyr', 'Trp', 'Phe'];
-    const isCurrentAromatic = aromatics.includes(currentUnknown);
-    const isGuessAromatic = aromatics.includes(compKey);
-
-    if (compKey === currentUnknown || (isCurrentAromatic && isGuessAromatic)) {
+    if (compKey === currentUnknown) {
       setGuessState('correct');
       setWrongGuess(null);
     } else {

@@ -9,6 +9,7 @@ import { ChapterPage } from './pages/ChapterPage';
 import { BiochemSimulatorPage } from './pages/BiochemSimulatorPage';
 
 import { BiochemUnknownLabPage } from './pages/BiochemUnknownLabPage';
+import { Pharmacognosy1SummaryPage } from './pages/Pharmacognosy1SummaryPage';
 
 export default function App() {
   return (
@@ -22,6 +23,7 @@ export default function App() {
           <Route path="subject/:id/chapter/:chapterId" element={<ChapterPage />} />
           <Route path="simulator/biochem-tests" element={<BiochemSimulatorPage />} />
           <Route path="simulator/biochem-unknown" element={<BiochemUnknownLabPage />} />
+          <Route path="simulator/pharmacognosy1-summary" element={<Pharmacognosy1SummaryPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
       </Routes>

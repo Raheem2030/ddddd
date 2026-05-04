@@ -42,9 +42,11 @@ export function BiochemUnknownLabPage() {
   const [tubeColor, setTubeColor] = useState('bg-white/10');
   const [guessState, setGuessState] = useState<'idle' | 'correct' | 'wrong'>('idle');
   const [wrongGuess, setWrongGuess] = useState<string | null>(null);
+  const timeoutRef = React.useRef<NodeJS.Timeout | null>(null);
 
   // Initialize with a random unknown
   const startNewUnknown = () => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
     const keys = Object.keys(UNKNOWNS) as UnknownCompound[];
     const randomKey = keys[Math.floor(Math.random() * keys.length)];
     setCurrentUnknown(randomKey);
@@ -60,6 +62,7 @@ export function BiochemUnknownLabPage() {
 
   const runTest = (testId: string) => {
     if (guessState === 'correct') return;
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
 
     let color = '';
     let text = '';
@@ -71,8 +74,11 @@ export function BiochemUnknownLabPage() {
         break;
         
       case 'xanthoproteic':
-        if (['Albumin', 'Casein', 'Tyr', 'Trp', 'Phe'].includes(currentUnknown)) { color = 'bg-orange-500'; text = 'برتقالي (+)'; }
-        else { color = 'bg-yellow-200'; text = 'أصفر / سلبي (-)'; }
+        if (['Albumin', 'Casein', 'Tyr', 'Trp', 'Phe'].includes(currentUnknown)) { 
+          color = 'bg-orange-500'; 
+          text = 'أصفر ثم برتقالي بعد إضافة NaOH (+)'; 
+        }
+        else { color = 'bg-white/10'; text = 'عديم اللون (-)'; }
         break;
         
       case 'folin':
@@ -96,7 +102,14 @@ export function BiochemUnknownLabPage() {
         break;
     }
 
-    setTubeColor(color);
+    if (testId === 'xanthoproteic' && ['Albumin', 'Casein', 'Tyr', 'Trp', 'Phe'].includes(currentUnknown)) {
+      setTubeColor('bg-yellow-400');
+      timeoutRef.current = setTimeout(() => {
+        setTubeColor('bg-orange-500');
+      }, 1500);
+    } else {
+      setTubeColor(color);
+    }
     
     const testName = TESTS.find(t => t.id === testId)?.name || testId;
     

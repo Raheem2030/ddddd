@@ -175,47 +175,88 @@ export function SubjectDashboard() {
               exit={{ x: 20, opacity: 0 }}
               className="space-y-8"
             >
-              {/* Quizzes Section */}
-              <div className="space-y-4">
-                <h3 className="text-lg font-bold text-white mb-2 flex items-center gap-2">
-                  <BrainCircuit className="w-5 h-5 text-[var(--color-pharma-accent)]" />
-                  الاختبارات
-                </h3>
-                {content?.quizzes && content.quizzes.length > 0 ? (
-                  content.quizzes.map((quiz) => (
-                    <button 
-                      key={quiz.id} 
-                      onClick={() => {
-                        if (quiz.path) {
-                          navigate(quiz.path);
-                        }
-                      }}
-                      className="w-full text-right glass-panel rounded-2xl p-5 border border-white/10 flex items-center justify-between hover:border-[var(--color-pharma-accent)]/50 transition-colors cursor-pointer block"
-                    >
-                      <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-xl bg-[var(--color-pharma-accent)]/20 flex items-center justify-center text-[var(--color-pharma-accent)] shrink-0">
-                          {quiz.type === 'simulator' ? <FlaskConical className="w-6 h-6" /> : <BrainCircuit className="w-6 h-6" />}
-                        </div>
-                        <div>
-                          <h4 className="font-bold text-white">{quiz.title}</h4>
-                          {quiz.type === 'simulator' ? (
-                            <p className="text-xs text-[var(--color-pharma-accent)] mt-1">مخبر افتراضي تفاعلي</p>
-                          ) : (
-                            <p className="text-xs text-gray-400 mt-1">{quiz.questionCount} سؤال • {quiz.durationMinutes} دقيقة</p>
-                          )}
-                        </div>
+              {(() => {
+                const regularQuizzes = content?.quizzes?.filter(q => q.type !== 'compilation') || [];
+                const compilations = content?.quizzes?.filter(q => q.type === 'compilation') || [];
+
+                return (
+                  <>
+                    {compilations.length > 0 && (
+                      <div className="space-y-4">
+                        <h3 className="text-lg font-bold text-white mb-2 flex items-center gap-2">
+                          <BookOpen className="w-5 h-5 text-[var(--color-pharma-primary)]" />
+                          التجميعات الشاملة
+                        </h3>
+                        {compilations.map((comp) => (
+                          <button 
+                            key={comp.id} 
+                            onClick={() => {
+                              if (comp.path) {
+                                navigate(comp.path);
+                              }
+                            }}
+                            className="w-full text-right glass-panel rounded-2xl p-5 border border-white/10 flex items-center justify-between hover:border-[var(--color-pharma-primary)]/50 transition-colors cursor-pointer block"
+                          >
+                            <div className="flex items-center gap-4">
+                              <div className="w-12 h-12 rounded-xl bg-[var(--color-pharma-primary)]/20 flex items-center justify-center text-[var(--color-pharma-primary)] shrink-0">
+                                <BookOpen className="w-6 h-6" />
+                              </div>
+                              <div>
+                                <h4 className="font-bold text-white">{comp.title}</h4>
+                                <p className="text-xs text-[var(--color-pharma-primary)] mt-1">تجميعة تفاعلية للمراجعة والحفظ</p>
+                              </div>
+                            </div>
+                            <div className="px-3 py-1 rounded-full bg-white/10 text-xs font-bold text-gray-300 whitespace-nowrap">
+                              استعراض
+                            </div>
+                          </button>
+                        ))}
                       </div>
-                      <div className="px-3 py-1 rounded-full bg-white/10 text-xs font-bold text-gray-300 whitespace-nowrap">
-                        {quiz.status === 'not_started' ? 'لم يبدأ' : quiz.status === 'in_progress' ? 'قيد الإنجاز' : 'مكتمل'}
-                      </div>
-                    </button>
-                  ))
-                ) : (
-                  <div className="text-center text-gray-500 py-4 glass-panel rounded-xl border border-white/5">
-                    <p>لا توجد اختبارات متاحة حالياً.</p>
-                  </div>
-                )}
-              </div>
+                    )}
+
+                    <div className="space-y-4">
+                      <h3 className="text-lg font-bold text-white mb-2 flex items-center gap-2">
+                        <BrainCircuit className="w-5 h-5 text-[var(--color-pharma-accent)]" />
+                        الاختبارات والمخابر الافتراضية
+                      </h3>
+                      {regularQuizzes.length > 0 ? (
+                        regularQuizzes.map((quiz) => (
+                          <button 
+                            key={quiz.id} 
+                            onClick={() => {
+                              if (quiz.path) {
+                                navigate(quiz.path);
+                              }
+                            }}
+                            className="w-full text-right glass-panel rounded-2xl p-5 border border-white/10 flex items-center justify-between hover:border-[var(--color-pharma-accent)]/50 transition-colors cursor-pointer block"
+                          >
+                            <div className="flex items-center gap-4">
+                              <div className="w-12 h-12 rounded-xl bg-[var(--color-pharma-accent)]/20 flex items-center justify-center text-[var(--color-pharma-accent)] shrink-0">
+                                {quiz.type === 'simulator' ? <FlaskConical className="w-6 h-6" /> : <BrainCircuit className="w-6 h-6" />}
+                              </div>
+                              <div>
+                                <h4 className="font-bold text-white">{quiz.title}</h4>
+                                {quiz.type === 'simulator' ? (
+                                  <p className="text-xs text-[var(--color-pharma-accent)] mt-1">مخبر افتراضي تفاعلي</p>
+                                ) : (
+                                  <p className="text-xs text-gray-400 mt-1">{quiz.questionCount} سؤال • {quiz.durationMinutes} دقيقة</p>
+                                )}
+                              </div>
+                            </div>
+                            <div className="px-3 py-1 rounded-full bg-white/10 text-xs font-bold text-gray-300 whitespace-nowrap">
+                              {quiz.status === 'not_started' ? 'لم يبدأ' : quiz.status === 'in_progress' ? 'قيد الإنجاز' : 'مكتمل'}
+                            </div>
+                          </button>
+                        ))
+                      ) : (
+                        <div className="text-center text-gray-500 py-4 glass-panel rounded-xl border border-white/5">
+                          <p>لا توجد اختبارات متاحة حالياً.</p>
+                        </div>
+                      )}
+                    </div>
+                  </>
+                );
+              })()}
             </motion.div>
           )}
 

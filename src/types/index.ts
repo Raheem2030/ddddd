@@ -86,7 +86,7 @@ export interface Resource {
 export interface Quiz {
   id: string;
   title: string;
-  type?: 'quiz' | 'simulator';
+  type?: 'quiz' | 'simulator' | 'compilation';
   path?: string; // Optional custom route path
   questionCount?: number;
   durationMinutes?: number;

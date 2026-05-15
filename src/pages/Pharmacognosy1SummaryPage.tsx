@@ -43,28 +43,28 @@ const CATEGORIES: TissueCategory[] = [
     icon: <Layers className="w-5 h-5" />,
     experiments: [
       {
+        goal: 'دراسة البشرة والثغور (ثنائيات الفلقة).',
+        plantAr: 'لسان الحمل السناني',
+        plantLa: 'Plantago lanceolata',
+        family: 'الحملية (Plantaginaceae)',
+        part: 'البشرة السفلى للورقة',
+        medium: 'الماء'
+      },
+      {
         goal: 'دراسة البشرة والثغور (أحاديات الفلقة النجيلية).',
         plantAr: 'الذرة الحلوة',
         plantLa: 'Zea mays',
-        family: 'النجيلية (Poaceae / Graminaceae)',
-        part: 'الورقة',
-        medium: 'قطرة ماء'
+        family: 'النجيلية (Poaceae, Graminaceae)',
+        part: 'البشرة السفلى للورقة',
+        medium: 'الماء'
       },
       {
         goal: 'دراسة البشرة والثغور (أحاديات الفلقة السوسنية).',
         plantAr: 'السوسن الألماني',
         plantLa: 'Iris germanica',
         family: 'السوسنية (Iridaceae)',
-        part: 'الورقة',
-        medium: 'قطرة ماء'
-      },
-      {
-        goal: 'دراسة البشرة والثغور (ثنائيات الفلقة).',
-        plantAr: 'لسان الحمل السناني',
-        plantLa: 'Plantago lanceolata',
-        family: 'الحملية (Plantaginaceae)',
-        part: 'الورقة',
-        medium: 'قطرة ماء'
+        part: 'البشرة السفلى للورقة',
+        medium: 'الماء'
       },
       {
         goal: 'دراسة الأوبار اللامسة النجمية.',
@@ -72,7 +72,7 @@ const CATEGORIES: TissueCategory[] = [
         plantLa: 'Olea europaea',
         family: 'الزيتونية (Oleaceae)',
         part: 'البشرة السفلى للورقة',
-        medium: 'قطرة ماء'
+        medium: 'الماء'
       },
       {
         goal: 'دراسة الأوبار اللامسة الطويلة.',
@@ -80,13 +80,13 @@ const CATEGORIES: TissueCategory[] = [
         plantLa: 'Pelargonium graveolens',
         family: 'الغرنوقية (Geraniaceae)',
         part: 'معلاق الورقة',
-        medium: 'قطرة ماء'
+        medium: 'الماء'
       }
     ]
   },
   {
     id: 'parenchyma',
-    title: 'النسج البرانشيمية',
+    title: 'النسج البرانشيمية والادخارية',
     icon: <Leaf className="w-5 h-5" />,
     experiments: [
       {
@@ -101,9 +101,9 @@ const CATEGORIES: TissueCategory[] = [
         goal: 'دراسة النسيج البرانشيمي الادخاري وبلورات سكر الإنولين.',
         plantAr: 'الأضاليا',
         plantLa: 'Dahlia variabilis',
-        family: 'المركبة (Compositae / Asteraceae)',
+        family: 'المركبة (Compositae, Asteraceae)',
         part: 'الدرنات الجذرية',
-        medium: 'الغليسرين بعد الترسيب بالكحول المطلق'
+        medium: 'الغليسرين والكحول'
       },
       {
         goal: 'دراسة النسيج البرانشيمي الادخاري وبلورات سكر الهيسبيريدوزيد.',
@@ -111,7 +111,7 @@ const CATEGORIES: TissueCategory[] = [
         plantLa: 'Citrus aurantium',
         family: 'السذابية (Rutaceae)',
         part: 'غلاف الثمرة (مقطع عرضي)',
-        medium: 'الغليسرين بعد الترسيب بالكحول المطلق'
+        medium: 'الغليسرين والكحول'
       },
       {
         goal: 'دراسة النسيج البرانشيمي الادخاري وحبات الألورون.',
@@ -128,6 +128,14 @@ const CATEGORIES: TissueCategory[] = [
         family: 'الكوميلينية (Commelinaceae)',
         part: 'الساق (مقطع طولي)',
         medium: 'الماء'
+      },
+      {
+        goal: 'دراسة حماضات الكالسيوم القنفذية ثلاثية الماء (Druses).',
+        plantAr: 'اللبلاب (حبل المساكين)',
+        plantLa: 'Hedra helix',
+        family: 'الآرالية (Araliaceae)',
+        part: 'عنق الورقة (مقطع عرضي)',
+        medium: 'الماء'
       }
     ]
   },
@@ -137,11 +145,51 @@ const CATEGORIES: TissueCategory[] = [
     icon: <TestTube className="w-5 h-5" />,
     experiments: [
       {
-        goal: 'دراسة حماضات الكالسيوم القنفذية ثلاثية الماء (Druses) والنسيج الدعامي الكولنشيمي.',
-        plantAr: 'اللبلاب (حبل المساكين)',
-        plantLa: 'Hedra helix',
-        family: 'الآرالية (Araliaceae)',
-        part: 'عنق الورقة (مقطع عرضي)',
+        goal: 'دراسة النسيج الكولنشيمي الزاوي.',
+        plantAr: 'النعنع',
+        plantLa: 'Mentha piperta',
+        family: 'الشفوية (Labiatae, Lamiaceae)',
+        part: 'الساق (مقطع عرضي)',
+        medium: 'الماء'
+      },
+      {
+        goal: 'دراسة النسيج الكولنشيمي الزاوي.',
+        plantAr: 'الشوندر',
+        plantLa: 'Beta vulgaris',
+        family: 'السرمقية (Chenopodiaceae)',
+        part: 'عنق الورقة',
+        medium: 'الماء'
+      },
+      {
+        goal: 'دراسة الكولنشيم الدائري.',
+        plantAr: 'البقدونس',
+        plantLa: 'Petroselinum sativa',
+        family: 'الخيمية (Apiaceae, Umbelliferae)',
+        part: 'الساق',
+        medium: 'الماء'
+      },
+      {
+        goal: 'دراسة الخلايا السيكلريدية.',
+        plantAr: 'السفرجل',
+        plantLa: 'Cydonia oblonga',
+        family: 'الوردية (Rosaceae)',
+        part: 'الثمرة',
+        medium: 'الماء'
+      },
+      {
+        goal: 'دراسة الخلايا السيكلريدية.',
+        plantAr: 'الأجاص',
+        plantLa: 'Pyrus communis',
+        family: 'الوردية (Rosaceae)',
+        part: 'الثمرة',
+        medium: 'الماء'
+      },
+      {
+        goal: 'دراسة النسيج البرانشيمي، والكولنشيم المماسي، والألياف اللحائية.',
+        plantAr: 'عباد الشمس',
+        plantLa: 'Helianthus annus',
+        family: 'المركبة (Asteraceae, Compositae)',
+        part: 'الساق',
         medium: 'الماء'
       }
     ]
@@ -180,7 +228,7 @@ const CATEGORIES: TissueCategory[] = [
         plantLa: 'Ficus elastic',
         family: 'التوتية (Moraceae)',
         part: 'الورقة (العرق الوسطي)',
-        medium: 'قطرة ماء'
+        medium: 'الماء'
       },
       {
         goal: 'دراسة الأوبار المفرزة اللاسعة (تحوي حمض النمل).',
@@ -188,15 +236,15 @@ const CATEGORIES: TissueCategory[] = [
         plantLa: 'Urtica urens',
         family: 'القراصية (Urticaceae)',
         part: 'الساق',
-        medium: 'قطرة ماء'
+        medium: 'الماء'
       },
       {
         goal: 'دراسة الأوبار المفرزة العطرية (قطرات المينتول).',
         plantAr: 'النعنع البلدي',
         plantLa: 'Mentha viridis',
-        family: 'الشفوية (Lamiaceae / Labiatae)',
+        family: 'الشفوية (Lamiaceae, Labiatae)',
         part: 'الورقة',
-        medium: 'قطرة ماء'
+        medium: 'الماء'
       },
       {
         goal: 'دراسة القنوات المفرزة للراتنج.',
@@ -204,14 +252,14 @@ const CATEGORIES: TissueCategory[] = [
         plantLa: 'Pinus Prutia',
         family: 'الصنوبرية (Pinaceae)',
         part: 'الورقة (مقطع عرضي)',
-        medium: 'التلوين المضاعف ثم الغليسرين'
+        medium: 'الغليسرين (بعد التلوين المضاعف)'
       },
       {
         goal: 'دراسة الأوعية اللبنية المتفاغمة.',
         plantAr: 'الخس',
         plantLa: 'Lactuca sativa',
-        family: 'المركبة (Asteraceae / Compositae)',
-        part: 'الجذر أو الساق (مقطع طولي)',
+        family: 'المركبة (Asteraceae, Compositae)',
+        part: 'الجذر أو الساق',
         medium: 'اليود اليودي'
       },
       {
@@ -219,7 +267,7 @@ const CATEGORIES: TissueCategory[] = [
         plantAr: 'الثوم',
         plantLa: 'Allium sativum',
         family: 'الزنبقية (Liliaceae)',
-        part: 'الفص (مقطع طولي)',
+        part: 'الفص',
         medium: 'اليود اليودي'
       }
     ]

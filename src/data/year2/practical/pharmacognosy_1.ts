@@ -1653,7 +1653,7 @@ export const pharmacognosy_1: SubjectContent = {
     {
       id: "q-sim-pharma",
       title: "تجميعة التطبيقات العملية الشاملة (عقاقير 1)",
-      type: "simulator",
+      type: "compilation",
       path: "/simulator/pharmacognosy1-summary",
       status: "not_started"
     }

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ContentCard } from '../../types';
 import { Volume2 } from 'lucide-react';
-import { getAudioPath, playAudioFromUrl } from '../../lib/audio';
+import { getAudioPath, playAudioSync } from '../../lib/audio';
 
 interface FlashcardsCardProps {
   data: ContentCard;
@@ -64,7 +64,7 @@ export function FlashcardsCard({ data, hideWrapper }: FlashcardsCardProps) {
                     e.stopPropagation();
                     const url = currentTerm.audioUrl || getAudioPath(currentTerm.latin || currentTerm.english || currentTerm.arabic || '');
                     if (url) {
-                      playAudioFromUrl(url);
+                      playAudioSync(url);
                     }
                   }}
                   className="bg-blue-500/20 hover:bg-blue-500/40 border border-blue-500/40 text-[#00F0FF] rounded-full p-4 flex items-center justify-center transition-all shadow-[0_0_15px_rgba(0,240,255,0.2)]"
@@ -94,7 +94,7 @@ export function FlashcardsCard({ data, hideWrapper }: FlashcardsCardProps) {
                     e.stopPropagation();
                     const url = currentTerm.audioUrl || getAudioPath(currentTerm.latin || currentTerm.english || currentTerm.arabic || '');
                     if (url) {
-                      playAudioFromUrl(url);
+                      playAudioSync(url);
                     }
                   }}
                   className="bg-blue-400/20 hover:bg-blue-400/40 border border-blue-400/40 text-[#00F0FF] rounded-full p-4 flex items-center justify-center transition-all shadow-[0_0_15px_rgba(0,240,255,0.2)]"

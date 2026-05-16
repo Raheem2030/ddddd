@@ -1,79 +1,140 @@
-export const audioFiles = [
-  "Araliaceae.mp3",
-  "Asteraceae.mp3",
-  "Beta vulgaris.mp3",
-  "Blantaginaceae.mp3",
-  "Chenopodiaceae.mp3",
-  "Commelinaceae.mp3",
-  "Compositae.mp3",
-  "Cucurbita pepo.wav",
-  "Cucurbitaceae.wav",
-  "Euphorbiaceae.mp3",
-  "Geraniaceae.mp3",
-  "Graminaceae.mp3",
-  "Iridaceae.mp3",
-  "Iris germanica.mp3",
-  "Lamiaceae.mp3",
-  "Mentha viridis.mp3",
-  "Moraceae.mp3",
-  "Oleaceae.mp3",
-  "Pinaceae.mp3",
-  "Plantago lanceolata.mp3",
-  "Poaceae.mp3",
-  "Rosaceae.mp3",
-  "Rutaceae.mp3",
-  "Solanaceae.mp3",
-  "Umbelliferae.mp3",
-  "Urticaceae.mp3",
-  "Zea  mays.mp3",
-  "_Allium sativum.mp3",
-  "_Citrus aurantum.mp3",
-  "_Cydonia oblonga.mp3",
-  "_Dahlia variabilis.mp3",
-  "_Ecballium elaterium.mp3",
-  "_Ficus elastic.mp3",
-  "_Hedra helix.mp3",
-  "_Lactuca sativa.mp3",
-  "_Mentha piperta.mp3",
-  "_Olea europaea.mp3",
-  "_Pelargonium graveolens.mp3",
-  "_Petroselinum sativa.mp3",
-  "_Pinus Prutia.mp3",
-  "_Pyrus communis.mp3",
-  "_Ricinus communis.mp3",
-  "_Solanum tuberosum.mp3",
-  "_Tradescantia virginiana.mp3",
-  "_Urtica urens.mp3",
-];
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { ContentCard } from '../../types';
+import { Volume2 } from 'lucide-react';
+import { getAudioPath, playAudioFromUrl } from '../../lib/audio';
 
-function normalizeTerm(t: string) {
-  let norm = t.toLowerCase().replace(/[^a-z]/g, "");
-  // Handle some specific typos in filenames vs code
-  norm = norm.replace("plantaginaceae", "blantaginaceae");
-  norm = norm.replace("citrusaurantium", "citrusaurantum");
-  norm = norm.replace("ficuselastica", "ficuselastic");
-  return norm;
+interface FlashcardsCardProps {
+  data: ContentCard;
+  hideWrapper?: boolean;
 }
 
-export function getAudioPath(term: string): string | null {
-  const normalized = normalizeTerm(term);
-  if (!normalized) return null;
-  
-  for (const file of audioFiles) {
-    const fileNorm = normalizeTerm(file.replace(".mp3", "").replace(".wav", ""));
-    if (fileNorm === normalized || normalized.includes(fileNorm) || fileNorm.includes(normalized)) {
-      return `/audio/${file}`;
+export function FlashcardsCard({ data, hideWrapper }: FlashcardsCardProps) {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [flipped, setFlipped] = useState(false);
+  const terms = data.terms || [];
+
+  if (terms.length === 0) {
+    return (
+      <div className="w-full h-full flex items-center justify-center text-gray-400">
+        لا توجد مصطلحات
+      </div>
+    );
+  }
+
+  const handleNext = () => {
+    if (currentIndex < terms.length - 1) {
+      setFlipped(false);
+      setTimeout(() => setCurrentIndex(currentIndex + 1), 150);
     }
-  }
-  return null;
-}
+  };
 
-export function playAudio(term: string) {
-  const path = getAudioPath(term);
-  if (path) {
-    const audio = new Audio(path);
-    audio.play().catch(e => console.error("Audio play error", e));
-  } else {
-    console.warn("No audio found for", term);
+  const handlePrev = () => {
+    if (currentIndex > 0) {
+      setFlipped(false);
+      setTimeout(() => setCurrentIndex(currentIndex - 1), 150);
+    }
+  };
+
+  const currentTerm = terms[currentIndex];
+
+  const content = (
+    <div className="flex flex-col h-full items-center justify-center p-6 w-full">
+      <div className="text-blue-400 font-bold mb-4">{currentIndex + 1} / {terms.length}</div>
+      <div 
+        className="relative w-full h-[60%] lg:h-[70%] cursor-pointer"
+        style={{ perspective: '1000px' }}
+        onClick={() => setFlipped(!flipped)}
+      >
+        <motion.div
+          className="w-full h-full relative transition-transform duration-500"
+          initial={false}
+          animate={{ rotateY: flipped ? 180 : 0 }}
+          style={{ transformStyle: 'preserve-3d' }}
+        >
+          <div 
+            className="absolute inset-0 w-full h-full flex flex-col items-center justify-center rounded-3xl border border-blue-500/30 bg-blue-500/10 p-6 backdrop-blur-md"
+            style={{ backfaceVisibility: 'hidden' }}
+          >
+            <h3 className="font-bold text-white text-3xl md:text-5xl text-center" dir="rtl">{currentTerm.arabic}</h3>
+            {(currentTerm.audioUrl || getAudioPath(currentTerm.latin || currentTerm.english || currentTerm.arabic || '')) && (
+              <div className="mt-6 flex flex-col items-center gap-2">
+                <button 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    const url = currentTerm.audioUrl || getAudioPath(currentTerm.latin || currentTerm.english || currentTerm.arabic || '');
+                    if (url) {
+                      playAudioFromUrl(url);
+                    }
+                  }}
+                  className="bg-blue-500/20 hover:bg-blue-500/40 border border-blue-500/40 text-[#00F0FF] rounded-full p-4 flex items-center justify-center transition-all shadow-[0_0_15px_rgba(0,240,255,0.2)]"
+                  title="استمع للفظ"
+                >
+                  <Volume2 className="w-6 h-6" />
+                </button>
+              </div>
+            )}
+            <p className="text-gray-400 mt-6 absolute bottom-6 text-sm">انقر للقلب</p>
+          </div>
+          
+          <div 
+            className="absolute inset-0 w-full h-full flex flex-col items-center justify-center rounded-3xl border border-blue-400/50 bg-blue-400/20 p-6 backdrop-blur-md"
+            style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
+          >
+            {(currentTerm.latin || currentTerm.english) && (
+              <p className="text-[#00F0FF] font-mono text-center font-bold text-2xl md:text-4xl mb-4" dir="ltr">{currentTerm.latin || currentTerm.english}</p>
+            )}
+            {currentTerm.description && (
+              <p className="text-gray-200 text-lg text-center" dir="rtl">{currentTerm.description}</p>
+            )}
+            {(currentTerm.audioUrl || getAudioPath(currentTerm.latin || currentTerm.english || currentTerm.arabic || '')) && (
+              <div className="mt-8 flex flex-col items-center gap-2">
+                <button 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    const url = currentTerm.audioUrl || getAudioPath(currentTerm.latin || currentTerm.english || currentTerm.arabic || '');
+                    if (url) {
+                      playAudioFromUrl(url);
+                    }
+                  }}
+                  className="bg-blue-400/20 hover:bg-blue-400/40 border border-blue-400/40 text-[#00F0FF] rounded-full p-4 flex items-center justify-center transition-all shadow-[0_0_15px_rgba(0,240,255,0.2)]"
+                  title="استمع للفظ"
+                >
+                  <Volume2 className="w-6 h-6" />
+                </button>
+                <p className="text-xs text-blue-300/70 mt-1">استمع للفظ</p>
+              </div>
+            )}
+          </div>
+        </motion.div>
+      </div>
+
+      <div className="flex items-center justify-between w-full mt-8 max-w-sm gap-4">
+        <button 
+          onClick={handleNext}
+          disabled={currentIndex === terms.length - 1}
+          className="px-6 py-3 rounded-xl font-bold bg-[#00F0FF]/10 text-[#00F0FF] border border-[#00F0FF]/30 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#00F0FF]/20 transition-all flex-1"
+        >
+          التالي
+        </button>
+        <button 
+          onClick={handlePrev}
+          disabled={currentIndex === 0}
+          className="px-6 py-3 rounded-xl font-bold bg-white/5 text-white border border-white/10 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-white/10 transition-all flex-1"
+        >
+          السابق
+        </button>
+      </div>
+    </div>
+  );
+
+  if (hideWrapper) {
+    return content;
   }
+
+  return (
+    <div className="w-full h-full glass-panel rounded-3xl overflow-hidden flex flex-col items-center justify-center border border-white/10 relative">
+      {content}
+    </div>
+  );
 }

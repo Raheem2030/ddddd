@@ -371,34 +371,34 @@ export function Pharmacognosy1SummaryPage() {
                         </div>
                       </div>
                       
-                      <div className="grid grid-cols-2 gap-3">
-                        <div className="bg-black/30 p-3 rounded-2xl border border-white/5">
-                          <span className="text-xs text-gray-500 font-bold mb-1 block">الفصيلة</span>
-                          <div className="flex items-center gap-2">
-                            <span className="text-sm font-semibold text-gray-300 line-clamp-1 flex-1" title={exp.family}>{exp.family}</span>
-                            {getAudioPath(exp.family) && (
-                              <button
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  playAudio(exp.family);
-                                }}
-                                className="bg-emerald-500/10 hover:bg-emerald-500/30 text-emerald-400 p-1.5 rounded-full transition-colors shrink-0"
-                                title="استمع للفظ"
-                              >
-                                <Volume2 className="w-3.5 h-3.5" />
-                              </button>
-                            )}
-                          </div>
+                      <div className="bg-black/30 p-3 rounded-2xl border border-white/5">
+                        <span className="text-xs text-gray-500 font-bold mb-1 block">الفصيلة</span>
+                        <div className="flex items-center gap-2">
+                          <span className="text-sm font-semibold text-gray-300 break-words flex-1" title={exp.family}>{exp.family}</span>
+                          {getAudioPath(exp.family) && (
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                playAudio(exp.family);
+                              }}
+                              className="bg-emerald-500/10 hover:bg-emerald-500/30 text-emerald-400 p-1.5 rounded-full transition-colors shrink-0"
+                              title="استمع للفظ"
+                            >
+                              <Volume2 className="w-3.5 h-3.5" />
+                            </button>
+                          )}
                         </div>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-3">
                         <div className="bg-black/30 p-3 rounded-2xl border border-white/5">
                           <span className="text-xs text-gray-500 font-bold mb-1 block">الجزء المدروس</span>
                           <span className="text-sm font-semibold text-emerald-200 block">{exp.part}</span>
                         </div>
-                      </div>
-
-                      <div className="bg-gradient-to-r from-emerald-900/30 to-transparent border border-emerald-500/20 p-3 rounded-2xl">
-                        <span className="text-xs text-emerald-500/70 font-bold mb-1 flex items-center gap-1">الوسط المستخدم</span>
-                        <span className="text-sm font-bold text-emerald-400" title={exp.medium}>{exp.medium}</span>
+                        <div className="bg-black/30 p-3 rounded-2xl border border-white/5">
+                          <span className="text-xs text-gray-500 font-bold mb-1 block">الوسط المستخدم</span>
+                          <span className="text-sm font-bold text-emerald-400 block" title={exp.medium}>{exp.medium}</span>
+                        </div>
                       </div>
                     </div>
                   </motion.div>

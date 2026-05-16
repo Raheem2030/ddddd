@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Microscope, Leaf, TestTube, Layers, Beaker, Zap } from 'lucide-react';
+import { ArrowRight, Microscope, Leaf, TestTube, Layers, Beaker, Zap, Volume2 } from 'lucide-react';
+import { getAudioPath, playAudio } from '../lib/audio';
 
 type TissueId = 'meristematic' | 'protective' | 'parenchyma' | 'connective' | 'vascular' | 'secretory';
 
@@ -146,7 +147,7 @@ const CATEGORIES: TissueCategory[] = [
     experiments: [
       {
         goal: 'دراسة النسيج الكولنشيمي الزاوي.',
-        plantAr: 'النعنع',
+        plantAr: 'النعنع الفلفلي',
         plantLa: 'Mentha piperta',
         family: 'الشفوية (Labiatae, Lamiaceae)',
         part: 'الساق (مقطع عرضي)',
@@ -352,14 +353,42 @@ export function Pharmacognosy1SummaryPage() {
                         <span className="text-xs text-gray-500 font-bold mb-1">النبات المدروس</span>
                         <div className="flex flex-col">
                           <span className="font-bold text-white text-sm">{exp.plantAr}</span>
-                          <span className="text-xs text-emerald-200/50 font-mono mt-0.5">{exp.plantLa}</span>
+                          <div className="flex items-center gap-2 mt-0.5">
+                            <span className="text-xs text-emerald-200/50 font-mono">{exp.plantLa}</span>
+                            {getAudioPath(exp.plantLa) && (
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  playAudio(exp.plantLa);
+                                }}
+                                className="bg-emerald-500/10 hover:bg-emerald-500/30 text-emerald-400 p-1 rounded-full transition-colors"
+                                title="استمع للفظ"
+                              >
+                                <Volume2 className="w-3.5 h-3.5" />
+                              </button>
+                            )}
+                          </div>
                         </div>
                       </div>
                       
                       <div className="grid grid-cols-2 gap-3">
                         <div className="bg-black/30 p-3 rounded-2xl border border-white/5">
                           <span className="text-xs text-gray-500 font-bold mb-1 block">الفصيلة</span>
-                          <span className="text-sm font-semibold text-gray-300 block">{exp.family}</span>
+                          <div className="flex items-center gap-2">
+                            <span className="text-sm font-semibold text-gray-300 line-clamp-1 flex-1" title={exp.family}>{exp.family}</span>
+                            {getAudioPath(exp.family) && (
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  playAudio(exp.family);
+                                }}
+                                className="bg-emerald-500/10 hover:bg-emerald-500/30 text-emerald-400 p-1.5 rounded-full transition-colors shrink-0"
+                                title="استمع للفظ"
+                              >
+                                <Volume2 className="w-3.5 h-3.5" />
+                              </button>
+                            )}
+                          </div>
                         </div>
                         <div className="bg-black/30 p-3 rounded-2xl border border-white/5">
                           <span className="text-xs text-gray-500 font-bold mb-1 block">الجزء المدروس</span>

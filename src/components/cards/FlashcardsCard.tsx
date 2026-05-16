@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ContentCard } from '../../types';
 import { Volume2 } from 'lucide-react';
+import { getAudioPath } from '../../lib/audio';
 
 interface FlashcardsCardProps {
   data: ContentCard;
@@ -56,13 +57,14 @@ export function FlashcardsCard({ data, hideWrapper }: FlashcardsCardProps) {
             style={{ backfaceVisibility: 'hidden' }}
           >
             <h3 className="font-bold text-white text-3xl md:text-5xl text-center" dir="rtl">{currentTerm.arabic}</h3>
-            {currentTerm.audioUrl && (
+            {(currentTerm.audioUrl || getAudioPath(currentTerm.latin || currentTerm.english || currentTerm.arabic || '')) && (
               <div className="mt-6 flex flex-col items-center gap-2">
                 <button 
                   onClick={(e) => {
                     e.stopPropagation();
-                    if (currentTerm.audioUrl) {
-                      const audio = new Audio(currentTerm.audioUrl);
+                    const url = currentTerm.audioUrl || getAudioPath(currentTerm.latin || currentTerm.english || currentTerm.arabic || '');
+                    if (url) {
+                      const audio = new Audio(url);
                       audio.play().catch(err => console.error('Audio playback failed:', err));
                     }
                   }}
@@ -86,13 +88,14 @@ export function FlashcardsCard({ data, hideWrapper }: FlashcardsCardProps) {
             {currentTerm.description && (
               <p className="text-gray-200 text-lg text-center" dir="rtl">{currentTerm.description}</p>
             )}
-            {currentTerm.audioUrl && (
+            {(currentTerm.audioUrl || getAudioPath(currentTerm.latin || currentTerm.english || currentTerm.arabic || '')) && (
               <div className="mt-8 flex flex-col items-center gap-2">
                 <button 
                   onClick={(e) => {
                     e.stopPropagation();
-                    if (currentTerm.audioUrl) {
-                      const audio = new Audio(currentTerm.audioUrl);
+                    const url = currentTerm.audioUrl || getAudioPath(currentTerm.latin || currentTerm.english || currentTerm.arabic || '');
+                    if (url) {
+                      const audio = new Audio(url);
                       audio.play().catch(err => console.error('Audio playback failed:', err));
                     }
                   }}

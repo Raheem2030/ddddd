@@ -1,3 +1,5 @@
+import { Howl } from 'howler';
+
 export const audioFiles = [
   "Araliaceae.mp3",
   "Asteraceae.mp3",
@@ -62,31 +64,26 @@ export function getAudioPath(term: string): string | null {
   for (const file of audioFiles) {
     const fileNorm = normalizeTerm(file.replace(".mp3", "").replace(".wav", ""));
     if (fileNorm === normalized || normalized.includes(fileNorm) || fileNorm.includes(normalized)) {
-      return `/audio/${file}`;
+      const base = import.meta.env.BASE_URL || '/';
+      return `${base.endsWith('/') ? base : base + '/'}audio/${file}`;
     }
   }
   return null;
 }
 
-const audioCache = new Map<string, HTMLAudioElement>();
+const audioCache = new Map<string, Howl>();
 
 export function playAudioSync(url: string) {
-  let audio = audioCache.get(url);
-  if (!audio) {
-    audio = new Audio(url);
-    audioCache.set(url, audio);
-  }
-  
-  // reset to start if already playing
-  audio.currentTime = 0;
-  
-  // Synchronous play is required for Safari / Telegram Webview
-  const playPromise = audio.play();
-  if (playPromise !== undefined) {
-    playPromise.catch(error => {
-      console.error("Audio playback failed or was blocked:", error);
+  let sound = audioCache.get(url);
+  if (!sound) {
+    sound = new Howl({
+      src: [url],
+      html5: false, // Use Web Audio API for short clips (fixes iOS silent switch issues)
     });
+    audioCache.set(url, sound);
   }
+  
+  sound.play();
 }
 
 export function playAudio(term: string) {

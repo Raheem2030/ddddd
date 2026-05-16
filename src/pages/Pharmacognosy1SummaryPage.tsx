@@ -183,14 +183,6 @@ const CATEGORIES: TissueCategory[] = [
         family: 'الوردية (Rosaceae)',
         part: 'الثمرة',
         medium: 'الماء'
-      },
-      {
-        goal: 'دراسة النسيج البرانشيمي، والكولنشيم المماسي، والألياف اللحائية.',
-        plantAr: 'عباد الشمس',
-        plantLa: 'Helianthus annus',
-        family: 'المركبة (Asteraceae, Compositae)',
-        part: 'الساق',
-        medium: 'الماء'
       }
     ]
   },
@@ -367,11 +359,11 @@ export function Pharmacognosy1SummaryPage() {
                       <div className="grid grid-cols-2 gap-3">
                         <div className="bg-black/30 p-3 rounded-2xl border border-white/5">
                           <span className="text-xs text-gray-500 font-bold mb-1 block">الفصيلة</span>
-                          <span className="text-sm font-semibold text-gray-300 block truncate" title={exp.family}>{exp.family}</span>
+                          <span className="text-sm font-semibold text-gray-300 block">{exp.family}</span>
                         </div>
                         <div className="bg-black/30 p-3 rounded-2xl border border-white/5">
                           <span className="text-xs text-gray-500 font-bold mb-1 block">الجزء المدروس</span>
-                          <span className="text-sm font-semibold text-emerald-200 block truncate" title={exp.part}>{exp.part}</span>
+                          <span className="text-sm font-semibold text-emerald-200 block">{exp.part}</span>
                         </div>
                       </div>
 

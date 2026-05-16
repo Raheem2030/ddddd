@@ -1015,10 +1015,10 @@ export const pharmacognosy_1: SubjectContent = {
             {
               id: 'c5-4-1',
               type: 'text',
-              title: 'التطبيق العملي الأول - الكولنشيم الزاوي (النعنع)',
+              title: 'التطبيق العملي الأول - الكولنشيم الزاوي (النعنع الفلفلي)',
               content: [
                 '• **الغاية:** دراسة النسيج الكولنشيمي الزاوي.',
-                '• **النبات:** النعنع (Mentha piperta).',
+                '• **النبات:** النعنع الفلفلي (Mentha piperta).',
                 '• **الفصيلة:** الشفوية (Labiatae, Lamiaceae).',
                 '• **الجزء المدروس:** الساق (مقطع عرضي).',
                 '• **الوسط:** الماء.',
@@ -1114,7 +1114,7 @@ export const pharmacognosy_1: SubjectContent = {
               type: 'flashcards',
               title: 'الأسماء العلمية للنباتات (التطبيقات العملية)',
               terms: [
-                { arabic: 'النعنع', latin: 'Mentha piperta' },
+                { arabic: 'النعنع الفلفلي', latin: 'Mentha piperta' },
                 { arabic: 'الشوندر', latin: 'Beta vulgaris' },
                 { arabic: 'البقدونس', latin: 'Petroselinum sativa' },
                 { arabic: 'السفرجل', latin: 'Cydonia oblonga' },
